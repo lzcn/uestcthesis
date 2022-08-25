@@ -11,7 +11,7 @@
 %
 
 \NeedsTeXFormat{LaTeX2e}[2017/04/15]
-\newcommand\ustcthesisversion{3.3.3}
+\newcommand\ustcthesisversion{0.0.1}
 \ProvidesClass{ustcthesis}[2022/05/17 {\ustcthesisversion} USTC thesis template]
 
 % 报错和警告
@@ -40,11 +40,17 @@
 
 % \subsection{处理选项}
 
+% kvdefinekeys.sty 主要提供了\cs{kv@define@key}用来定义选项
+% 语法 \kv@define@key{<family>}{<key>}[<default>]{<definition>}
 \RequirePackage{kvdefinekeys}
+% 语法 \kvsetkeys{<family>}{<key value list>}
 \RequirePackage{kvsetkeys}
+% kvoptions.sty 主要提供了\cs{DeclareDefaultOptions}和
+% \cs{ProcessKeyvalOptions} 处理 kv 选项
 \RequirePackage{kvoptions}
 
 % 提供一个 \cs{ustcsetup} 命令支持 \emph{key-value} 的方式来设置。
+% 语法 \ustcsetup{<key value list>}
 \let\ustc@setup@hook\@empty
 \newcommand\ustcsetup[1]{%
   \let\ustc@setup@hook\@empty
@@ -55,20 +61,20 @@
 % 同时用 \emph{key-value} 的方式来定义这些接口：
 % \begin{latex}
 %   \ustc@define@key{
-%     <key> = {
-%       name = <name>,
+%     degree = {
 %       choices = {
-%         <choice1>,
-%         <choice2>,
+%         doctor,
+%         master,
+%         bachelor,
 %       },
-%       default = <default>,
+%       default = doctor,
 %       code = <code>,
 %     },
 %   }
 % \end{latex}
 
-% 其中 |choices| 设置允许使用的值，默认为第一个（或者 \meta{default}）；
-% \meta{code} 是相应的内容被设置时执行的代码。
+% 这里的 key 是 degree，choices是取值范围，
+% \meta{default}是默认值，\meta{code} 是相应的内容被设置时执行的代码。
 
 \newcommand\ustc@define@key[1]{%
   \kvsetkeys{ustc@key}{#1}%
@@ -151,12 +157,15 @@
 }
 
 % 定义接口向 |key| 添加 |code|：
-
+% 语法 \ustc@option@hook{<key>}{<code>}
 \newcommand\ustc@option@hook[2]{%
   \expandafter\g@addto@macro\csname ustc@#1@@code\endcsname{#2}%
 }
 
+% 定义模板支持的选项
 \ustc@define@key{
+  % \ustc@degree 
+  % 论文的学位
   degree = {
     choices = {
       doctor,
@@ -165,6 +174,8 @@
     },
     default = doctor,
   },
+  % \ustc@degree@type 
+  % 学位类型，学术型和工程型
   degree-type = {
     name = degree@type,
     choices = {
@@ -173,6 +184,8 @@
     },
     default = academic,
   },
+  % \ustc@main@language
+  % 论文的主要语言
   main-language = {
     name = main@language,
     choices = {
@@ -181,6 +194,8 @@
     },
     default = chinese,
   },
+  % \ustc@language
+  % 论文的语言
   language = {
     choices = {
       chinese,
@@ -188,6 +203,8 @@
     },
     default = chinese,
   },
+  % \ustc@system
+  % 操作系统
   system = {
     choices = {
       auto,
@@ -197,6 +214,8 @@
     },
     default = auto,
   },
+  % \ustc@fontset
+  % 字体集
   fontset = {
     choices = {
       auto,
@@ -208,6 +227,8 @@
     },
     default = auto,
   },
+  % \ustc@font
+  % 外文字体
   font = {
     choices = {
       auto,
@@ -223,6 +244,8 @@
     },
     default = auto,
   },
+  % \ustc@cjk@font
+  % 中文字体
   cjk-font = {
     name = cjk@font,
     choices = {
@@ -235,6 +258,8 @@
     },
     default = auto,
   },
+  % \ustc@main@font
+  % 主要字体
   math-font = {
     name = math@font,
     choices = {
@@ -250,6 +275,8 @@
     },
     default = auto,
   },
+  % \ustc@math@style
+  % 数学样式
   math-style = {
     name = math@style,
     choices = {
@@ -306,6 +333,8 @@
       fraktur,
     },
   },
+  % \ustc@cite@style
+  % 引用样式：上标、行内、作者+年份
   cite-style = {
     name = cite@style,
     choices = {
@@ -321,6 +350,8 @@
     },
     default = print,
   },
+  % \ustc@section@style
+  % 章节编号语言
   section-style = {
     name = section@style,
     choices = {
@@ -349,7 +380,9 @@
 % 将 \ustc@cite@style 置空方便后续进行判断。
 \def\ustc@cite@style{}
 
+% 定义\ifustc@degree@graduate条件
 \newif\ifustc@degree@graduate
+% 为\ifustc@degree@graduate条件定义赋值命令
 \newcommand\ustc@set@graduate{%
   \ifustc@degree@bachelor
     \ustc@degree@graduatefalse
@@ -358,18 +391,22 @@
   \fi
 }
 \ustc@set@graduate
+% 为degree添加执行代码，每当degree变化时，都会判断为\ifustc@degree@graduate条件赋值。
 \ustc@option@hook{degree}{%
   \ustc@set@graduate
 }
 
-% 使用 \pkg{kvoptions} 提供的 key-value 接口，
+% 使用 \pkg{kvoptions} 提供的 key-value 接口
 \SetupKeyvalOptions{
   family  = ustc,
   prefix  = ustc@,
   setkeys = \kvsetkeys,
 }
 
-% 设置默认 \option{openany}。
+% 设置新章节开始位置
+% openright: 新章节只能开始在奇数页（右边页）
+% openany: 新章节可以开始在任意页
+% 由于 book 类默认使用 openright，这里改为 openany
 \DeclareBoolOption[false]{openright}
 \DeclareComplementaryOption{openany}{openright}
 
@@ -428,6 +465,8 @@
 \RequirePackage{url}
 \RequirePackage{notoccite}
 \RequirePackage{multirow}
+\RequirePackage{calc}
+\RequirePackage{booktabs}
 
 % 如果用户在导言区未调用 \pkg{biblatex}，则自动调用 \pkg{natbib}。
 \AtEndPreamble{
@@ -559,27 +598,28 @@
 
 % 由于《撰写手册》中的“speciality”一词使用的是英式拼法，
 % 所以“acknowledgements”也保持一致。
+% 特殊章节的名称
 \newcommand\ustc@set@chapter@names{%
   \ifustc@main@language@chinese
     \def\contentsname{目录}%
-    \def\listfigurename{插图清单}%
-    \def\listtablename{表格清单}%
+    \def\listfigurename{图目录}%
+    \def\listtablename{表目录}%
     \ctexset{
       chapter/name   = {第,章},
     }%
     \def\bibname{参考文献}%
     \def\appendixname{附录}%
     \def\ustc@acknowledgements@name{致谢}%
-    \def\ustc@publication@name{在读期间发表的学术论文与取得的研究成果}%
-    \newcommand\ustc@notation@name{符号说明}%
+    \def\ustc@publication@name{攻读博士学位期间取得的成果}%
+    \newcommand\ustc@notation@name{主要符号表}%
   \else
     \def\contentsname{Contents}%
-    \def\listfigurename{List of Figures}%
-    \def\listtablename{List of Tables}%
+    \def\listfigurename{Figures}%
+    \def\listtablename{Tables}%
     \ctexset{
       chapter/name   = {\chaptername\space},
     }%
-    \def\bibname{Bibliography}%
+    \def\bibname{References}%
     \def\appendixname{Appendix}%
     \def\ustc@acknowledgements@name{Acknowledgements}%
     \def\ustc@publication@name{Publications}%
@@ -615,7 +655,7 @@
 %   \label{tab:fontsize}
 %   \begin{tabular}{lllll}
 %     \toprule
-%     字体命令          & 字号 & bp   & 研究生行距 & 本科生行距 \\
+%     字体命令           & 字号 & bp   & 研究生行距   & 本科生行距   \\
 %     \midrule
 %     \cs{tiny}         & 小六 & 6.5  & 10.83      & 11.92      \\
 %     \cs{scriptsize}   & 六号 & 7.5  & 12.5       & 13.75      \\
@@ -698,7 +738,7 @@
   \fi
 \fi
 
-% 《撰写手册》要求西文字体使用 Times New Roman 和 Arial，
+% 要求西文字体使用 Times New Roman，
 % 但是在 Linux 下没有这两个字体，所以使用它们的克隆版 TeX Gyre Termes 和
 % TeX Gyre Heros。
 \ifustc@font@auto
@@ -713,10 +753,10 @@
   \fi
 \fi
 
-% Times New Roman + Arial
+% Times New Roman
 \newcommand\ustc@set@font@times{%
   \setmainfont{Times New Roman}%
-  \setsansfont{Arial}%
+  \setsansfont{Times New Roman}%
   \ifustc@system@mac
     \setmonofont{Menlo}[Scale = MatchLowercase]%
   \else
@@ -950,13 +990,12 @@
 % Windows 的中易字体。
 \newcommand\ustc@set@cjk@font@windows{%
   \setCJKmainfont{SimSun}[
-    AutoFakeBold = 3,
-    ItalicFont   = KaiTi,
-  ]%
-  \setCJKsansfont{SimHei}[AutoFakeBold = 3]%
+    AutoFakeBold = true,
+  ]
+  \setCJKsansfont{SimHei}%
   \setCJKmonofont{FangSong}%
-  \setCJKfamilyfont{zhsong}{SimSun}[AutoFakeBold = 3]%
-  \setCJKfamilyfont{zhhei}{SimHei}[AutoFakeBold = 3]%
+  \setCJKfamilyfont{zhsong}{SimSun}%
+  \setCJKfamilyfont{zhhei}{SimHei}%
   \setCJKfamilyfont{zhkai}{KaiTi}%
   \setCJKfamilyfont{zhfs}{FangSong}%
 }
@@ -1491,6 +1530,13 @@
   \let\uppi\pi
 }
 
+% 设置 mathbb 和 mathcal 字体
+\AtBeginDocument{%
+  \let\mathbb\relax
+  \DeclareMathAlphabet{\mathbb}{U}{msb}{m}{n}%
+  \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+}
+
 % 不设置数学字体，仅提供兼容支持。
 \newcommand\ustc@set@math@font@none{%
   \RequirePackage{amssymb}
@@ -1526,36 +1572,40 @@
 % 使用 \pkg{geometry} 宏包设置纸张和页面。
 
 % 纸张：A4；
-
-% 页面设置：上、下 2.54 cm，左、右 3.17 cm，页眉 1.5 cm，页脚 1.75 cm。
-
-% 注意这里指的是页眉顶部到纸张顶部的距离为 1.5 cm，
-% 所以应该是 2.54cm - 0.8cm - 0.24cm = 1.5cm
+% 页面设置：上、下边距 3.0 cm，左、右边距 3.0 cm，页眉边距 2.0 cm，页脚边距 2.0 cm。
+% 页眉边距 = 页眉顶部到纸张顶部的距离为 2.0 cm，
+% footskip = 下边距 - 页脚边距 = 1.0cm
+% headsep ~= 0.49cm (手动测量)
 
 \geometry{
   paper      = a4paper,
-  vmargin    = 2.54cm,
-  hmargin    = 3.17cm,
-  headheight = 0.75cm,
-  headsep    = 0.29cm,
-  footskip   = 0.79cm,
+  vmargin    = 3.0cm,
+  hmargin    = 3.0cm,
+  headsep    = 0.49cm,
+  footskip   = 1.0cm,
 }
 
 % 使用 \pkg{fancy} 需要先调用 |\pagestyle{fancy}| 再修改 \cs{chaptermark} 和
 % \cs{sectionmark}。
 \pagestyle{fancy}
 \let\sectionmark\@gobble
-\renewcommand\headrulewidth{0.4\p@}
+% 页眉线为单横线，线宽 0.75 磅。
+\renewcommand\headrulewidth{0.75\p@}
 
 % 重定义默认的 |plain| page style，会显示页眉和页脚。
+% 论文除中文摘要之前的前置部分（封面，中、英文扉页，独创性声明及论文使 用授权页）
+% 不编排页眉和页码外，其余页面均须编排页眉和页码。
+% 
 \fancypagestyle{plain}{%
   \fancyhf{}%
   %
-  % 页眉与该部分的章标题相同，宋体 10.5 磅（五号）居中。
-  % 页码：宋体 10.5 磅、页面下脚居中。
+  % 页眉位于页面顶端居中书写，五号字
+  % 页码位于页面底端居中书写，小五号字
   \ifustc@degree@graduate
     \def\ustc@hf@font{\fontsize{10.5bp}{12bp}\selectfont}
-    \fancyhead[C]{\ustc@hf@font\leftmark}%
+    \fancyhead[CE]{\ustc@hf@font 电子科技大学\ustc@thesis@name}
+    \fancyhead[CO]{\ustc@hf@font\leftmark}%
+    \def\ustc@hf@font{\fontsize{9bp}{10.3bp}\selectfont}
     \fancyfoot[C]{\ustc@hf@font\thepage}%
     \let\@mkboth\markboth
     \def\chaptermark##1{%
@@ -1792,7 +1842,7 @@
 % 定义一些常量。
 \ifustc@degree@doctor
   \newcommand\ustc@thesis@name{博士学位论文}
-  \newcommand\ustc@thesis@name@en{A dissertation for doctor's degree}
+  \newcommand\ustc@thesis@name@en{A Doctoral Dissertation}
 \else
   \ifustc@degree@master
     \newcommand\ustc@thesis@name{硕士学位论文}
@@ -1859,53 +1909,40 @@
   \ustcsetup{language=chinese}%
   \begin{titlepage}%
     \ustc@pdfbookmark{封面}%
-    \centering
-    \parbox[t][0.6cm][t]{\textwidth}{%
-      \raggedleft\fangsong\fontsize{14bp}{14bp}\selectfont
-      \null\ustc@secret@level\par}\par
-    \vskip 0.5cm%
-    \includegraphics[height=1.3cm]{figures/ustc-name.pdf}\par
-    \vskip 0.6cm%
-    {\sffamily\fontsize{56bp}{56bp}\selectfont
-      \ustc@thesis@name\par}%
-    \ifustc@degree@type@academic
-      \vskip 2.0cm%
-    \else
-      \vskip 0.8cm%
-      \begingroup
-        \fontsize{26bp}{26bp}\selectfont
-        \ifx\ustc@professional@type\@empty
-          \null
-        \else
-          \lishu （\ustc@professional@type ）%
-        \fi
-        \par
-      \endgroup
-      \vskip 1.0cm%
-    \fi
-    \ifustc@badge@color@blue
-      \textcolor{ustcblue}{%
-        \includegraphics[height=4.1cm]{figures/ustc-badge.pdf}}%
-    \else
-      \includegraphics[height=4.1cm]{figures/ustc-badge.pdf}%
-    \fi\par
-    \vskip 0.9cm%
-    \parbox[t][3.5cm][c]{\textwidth}{%
-      \centering\sffamily\bfseries\fontsize{26bp}{50bp}\selectfont
-      \ustc@title\par}\par
-    \vskip 0.6cm%
-    {\fontsize{16bp}{31bp}\selectfont
-      \begin{tabular}{@{}l@{\hspace{\ccwd}}l@{}}%
-        \textsf{作者姓名：} & \ustc@author \\
-        \textsf{\ustc@speciality@name：} & \ustc@speciality \\
-        \ifx\ustc@advisor\@empty
-          \textsf{导师姓名：} & \ustc@supervisor@names \\
-        \else
-          \textsf{校内导师：} & \ustc@supervisor@names \\
-          \textsf{企业导师：} & \ustc@advisor@names \\
-        \fi
-        \textsf{完成时间：} & \ustc@date@zh@big
-      \end{tabular}\par}%
+    \begin{center}
+      % \linespread{1.391}
+      \vspace*{0.058cm}%
+      \fontsize{22pt}{22pt}\selectfont 电\hspace{0.505em}子\hspace{0.505em}科\hspace{0.505em}技\hspace{0.505em}大\hspace{0.505em}学 \\[5pt]
+      \fontsize{12pt}{12pt}\selectfont UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA \\[52pt]
+      \fontsize{42pt}{42pt}\selectfont \ustc@thesis@name \\[12pt]
+      \fontsize{16pt}{16pt}\selectfont\textnormal{\MakeUppercase{Doctoral Dissertation}} \\[40pt]
+      \includegraphics[width=170bp]{figures/uestc-badge.pdf} \\[32bp]
+      % title
+      \setlength{\extrarowheight}{13pt}
+      \begin{tabular}{lp{4.2in}}
+      {\bfseries\fontsize{18pt}{18pt}\selectfont 论文题目 } & \multirow[t]{2}{4.2in}{
+          \centering\bfseries\fontsize{18pt}{18pt}\selectfont\ustc@title
+        } \\
+        \cline{2-2} & \\
+        \cline{2-2} & \\
+      \end{tabular}
+      % others
+      \hspace*{\fill}\\[\baselineskip]    
+      \begin{tabular}{>{\bfseries\fontsize{16pt}{16pt}\selectfont}l
+        >{\centering\arraybackslash\bfseries\fontsize{16pt}{16pt}\selectfont}
+        p{3.77in}p{15pt}}
+      学科专业 & \ustc@speciality &\\
+      \cline{2-2}
+      学\hspace{2\ccwd}号 & \ustc@student@id & \\
+      \cline{2-2}
+      作者姓名 & \ustc@author &\\
+      \cline{2-2}
+      指导老师 & \ustc@supervisor@names &\\
+      \cline{2-2}
+      学\hspace{2\ccwd}院 & \ustc@department &\\
+      \cline{2-2}
+      \end{tabular}
+    \end{center}
   \end{titlepage}%
   \ustc@reset@main@language
 }
@@ -1919,45 +1956,32 @@
     \parbox[t][0.4cm][t]{\textwidth}{%
       \raggedleft\fontsize{14bp}{14bp}\selectfont
       \null\ustc@secret@level@en\par}\par
-    \vskip 0.5cm%
-    {\sffamily\fontsize{20bp}{30bp}\selectfont
-      University of Science and Technology of China\par}%
-    {\sffamily\fontsize{26bp}{30bp}\selectfont
-      \ustc@thesis@name@en\par}%
-    \ifustc@degree@type@academic\else
-      \begingroup
-        \fontsize{16bp}{32bp}\selectfont
-        \ifx\ustc@professional@type@en\@empty
-          \null
-        \else
-          (\ustc@professional@type@en)
-        \fi
-        \par
-      \endgroup
-    \fi
-    \vskip 2.5cm%
-    \ifustc@badge@color@blue
-      \textcolor{ustcblue}{%
-        \includegraphics[height=4.5cm]{figures/ustc-badge.pdf}}%
-    \else
-      \includegraphics[height=4.5cm]{figures/ustc-badge.pdf}%
-    \fi\par
-    \vskip 0.5cm%
-    \parbox[t][4.5cm][c]{\textwidth}{%
-      \centering\sffamily\bfseries\fontsize{26bp}{30bp}\selectfont
-      \ustc@title@en\par}\par
-    \vskip 1.6cm%
-    {\fontsize{16bp}{30bp}\selectfont
-      \begin{tabular}{@{}l@{}}%
-        Author:        \ustc@author@en \\
-        Speciality:    \ustc@speciality@en \\
-        \ustc@supervisor@en@line \\
-        \ifx\ustc@advisor\@empty
-        \else
-          \ustc@advisor@en@line \\
-        \fi
-        Finished time: \ustc@date@en
-      \end{tabular}\par}%
+    \vskip 0.8cm%
+    % english title
+    {\fontsize{18pt}{20pt}\selectfont\bfseries\ustc@title@en\par}%
+    \par{\vspace{6.3cm}}
+    % 
+    {\sffamily\fontsize{15pt}{17pt}\selectfont
+      \ustc@thesis@name@en\ Submitted to \\
+  University of Electronic Science and Technology of China\par}%
+  \par{\vspace{3.2cm}}
+  \noindent
+  \begin{tabular}{>{\fontsize{16pt}{16pt}\selectfont}r
+    >{\centering\arraybackslash\bfseries\fontsize{16pt}{16pt}\selectfont}
+    p{10.6cm}}
+    Discipline: & \multirow[t]{2}{*}{\ustc@speciality@en} \\
+  \cline{2-2}
+  & \\
+  \cline{2-2}
+  Author: & \ustc@author@en \\
+  \cline{2-2}
+  Student ID: & \ustc@student@id \\
+  \cline{2-2}
+  Supervisor: & \ustc@advisor@en@line \\
+  \cline{2-2}
+  School: & University of Electronic Science and Technology of China \\
+  \cline{2-2}
+  \end{tabular}
   \end{titlepage}%
   \ustc@reset@main@language
 }
@@ -2056,18 +2080,19 @@
 
 % 定义原创性声明
 \newcommand\ustc@originality{%
-  本人声明所呈交的学位论文，是本人在导师指导下进行研究工作所取得的成果。%
-  除已特别加以标注和致谢的地方外，论文中不包含任何他人已经发表或撰写过的%
-  研究成果。%
-  与我一同工作的同志对本研究所做的贡献均已在论文中作了明确的说明。}
+  本人声明所呈交的学位论文是本人在导师指导下进行的研究工作及取%
+  得的研究成果。据我所知，除了文中特别加以标注和致谢的地方外，%
+  论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得%
+  电子科技大学或其它教育机构的学位或证书而使用过的材料。与我一%
+  同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明%
+  并表示谢意。
+}
 \newcommand\ustc@authorization{%
-  作为申请学位的条件之一，学位论文著作权拥有者授权中国科学技术大学拥有%
-  学位论文的部分使用权，%
-  即：学校有权按有关规定向国家有关部门或机构送交论文的复印件和电子版，%
-  允许论文被查阅和借阅，可以将学位论文编入《中国学位论文全文数据库》等%
-  有关数据库进行检索，可以采用影印、缩印或扫描等复制手段保存、汇编学位论文。%
-  本人提交的电子文档的内容和纸质论文的内容相一致。\par
-  控阅的学位论文在解密后也遵守此规定。}
+  本学位论文作者完全了解电子科技大学有关保留、使用学位论文的规%
+  定，有权保留并向国家有关部门或机构送交论文的复印件和磁盘，允%
+  许论文被查阅和借阅。本人授权电子科技大学可以将学位论文的全部%
+  或部分内容编入有关数据库进行检索，可以采用影印、缩印或扫描等%
+  复制手段保存、汇编学位论文。\par（保密的学位论文在解密后应遵守此规定）}
   %
   % 生成空的下划线
 \newcommand\ustc@underline[2][3.2cm]{\underline{\hb@xt@ #1{\hss#2\hss}}}
@@ -2083,7 +2108,7 @@
     \null
     \vskip 0.3cm%
     {\centering\sffamily\fontsize{16bp}{32bp}\selectfont
-      中国科学技术大学学位论文原创性声明\par}%
+    独创性声明\par}%
     \vskip 0.7cm%
     \ustc@originality\par
     \vskip 1.3cm%
@@ -2091,29 +2116,14 @@
     签字日期：\ustc@underline{}\par
     \vskip 1.9cm%
     {\centering\sffamily\fontsize{16bp}{32bp}\selectfont
-      中国科学技术大学学位论文授权使用声明\par}%
+    论文使用声明\par}%
     \vskip 0.7cm%
     \ustc@authorization\par
     \vskip 0.6cm%
-    \ifx\ustc@secret@level\@empty
-      \ustc@checkbox{} 公开\quad
-      $\square$ 控阅（\ustc@underline[0.85cm]{}年）\par
-    \else
-      $\square$ 公开\quad
-      \ustc@checkbox{} 控阅（\ustc@underline[0.8cm]{\ustc@secret@year}年）\par
-    \fi
-    \vskip 0.5cm%
     作者签名：\ustc@underline{}\hspace{2.7cm}%
     导师签名：\ustc@underline{}\par
     \vskip 0.5cm%
-    签字日期：\ustc@underline{}\hspace{2.7cm}%
-    签字日期：\ustc@underline{}\par
-    \ifustc@reviewer@true
-      \vskip 1.5cm%
-      \hskip -1em%
-      评审专家签名：\ustc@underline{}\hspace{4.5em}%
-      评审专家签名：\ustc@underline{}\par
-    \fi
+    \hspace{8.0cm}日期：\ustc@underline{}\par
   \end{titlepage}%
 }
 \ifustc@degree@bachelor
@@ -2125,8 +2135,8 @@
 
 % \subsection{章节标题}
 
-% 标题最多允许使用五级。
-\setcounter{secnumdepth}{5}
+% 标题最多允许使用四级，一般到三级层级。
+\setcounter{secnumdepth}{4}
 
 % 研究生规定章题为两字时中间空两字，三字时空一字，四字时空半字，四字以上不空。
 % 这里用 \LaTeX3 的 \cs{str\_count:N} 判断字数。
@@ -2138,11 +2148,7 @@
     \ifustc@degree@graduate
       \ifcase\ustc@titlelength
       \or\or
-        \ziju{2}%
-      \or
         \ziju{1}%
-      \or
-        \ziju{0.5}%
       \fi
     \else
       \if@mainmatter\else
@@ -2169,80 +2175,53 @@
 
 % 用 \pkg{ctex} 的接口设置全部章节标题格式。
 
-% 各章标题：黑体 16 磅加粗居中，单倍行距，段前 24 磅，段后 18 磅，
-% 章序号与章名间空一字。
-
 % 由于 Word 模板中使用“单倍行距”，还“对齐到网格”，这在 TeX 中不容易实现。
 % 所以目前按照默认的行距。
-
 % 注意 \pkg{ctex} v2.4.3 以下版本的bug会导致章节标题前后的距离的实际值偏大。
 % 另外 \pkg{ctex} v2.2 前的beforeskip的符号有特殊意义。
+
+% 各章标题由序号和名称组成，之间空1个半角字符。
 \ctexset{
+  %
+  % 一级标题，即章标题：黑体 15 磅加粗居中，单倍行距，段前 24 磅，段后 18 磅，
+  % 章序号与章名间空1个半角字符。
   chapter = {
-    format      = \centering\sffamily\bfseries\fontsize{16bp}{26.67bp}\selectfont,
+    format      = \centering\sffamily\bfseries\fontsize{15bp}{25bp}\selectfont,
     nameformat  = {},
     titleformat = \ustc@spacetitle,
-    number      = \thechapter,
-    aftername   = \hspace{\ccwd},
-    beforeskip  = 24bp,
+    number      = \zhnumber{\arabic{chapter}},
+    aftername   = \hspace{0.5\ccwd},
+    beforeskip  = 24pt,
     afterskip   = 18bp,
     fixskip     = true,
   },
-}
-
-% 一级节标题：黑体 14 磅左顶格，单倍行距，段前 24 磅，段后 6 磅，
-% 序号与题名间空一字。
-\ctexset{
+  % 
+  % 二级节标题：黑体 14 磅左顶格，单倍行距，段前 18 磅，段后 6 磅，
+  % 序号与题名间空1个半角字符。
   section = {
-    format     = \sffamily\fontsize{14bp}{23.33bp}\selectfont,
-    aftername  = \hspace{\ccwd},
-    beforeskip = 24bp,
+    format     = \sffamily\bfseries\fontsize{14bp}{23.33bp}\selectfont,
+    aftername  = \hspace{0.3\ccwd},
+    beforeskip = 18bp,
     afterskip  = 6bp,
   },
   %
-  % 二级节标题：黑体 13 磅，左缩进两字，单倍行距，段前 12 磅，段后 6 磅，
-  % 序号与题名间空一字。
+  % 三级节标题：黑体 14 磅左顶格，单倍行距，段前 12 磅，段后 6 磅，
+  % 序号与题名间空1个半角字符。
   subsection = {
-    format     = \sffamily\fontsize{13bp}{21.67bp}\selectfont,
-    aftername  = \hspace{\ccwd},
-    indent     = 2\ccwd,
+    format     = \sffamily\bfseries\fontsize{14bp}{23.33bp}\selectfont,
+    aftername  = \hspace{0.3\ccwd},
     beforeskip = 12bp,
     afterskip  = 6bp,
   },
   %
-  % 三级及以下节标题的格式没有具体规定，按照 Word 模板的格式：
-  % 使用黑体 12 磅，左缩进两字，行距 20 磅，段前段后 0 磅，序号与题名间空半字宽。
+  % 四级节标题：使用黑体 12 磅左顶格，行距 12 磅，段前段后 6 磅
+  % 序号与题名间空1个半角字符。
   subsubsection = {
-    format     = \sffamily\fontsize{12bp}{20bp}\selectfont,
+    format     = \sffamily\bfseries\fontsize{12bp}{20bp}\selectfont,
     number     = \arabic{subsubsection},
-    aftername  = .\hspace{0.5\ccwd},
-    indent     = 2\ccwd,
-    beforeskip = \z@,
-    afterskip  = \z@,
-  },
-  %
-  % 按照 Word 模板的格式，四级节标题：宋体 12 磅，左缩进两字，行距 20 磅，
-  % 段前段后 0 磅，序号使用全宽括号，与题名间空半字宽。
-  paragraph = {
-    format     = \rmfamily\fontsize{12bp}{20bp}\selectfont,
-    number     = （\arabic{paragraph}）,
-    aftername  = \hspace{0.5\ccwd},
-    indent     = 2\ccwd,
-    beforeskip = \z@,
-    afterskip  = \z@,
-    runin      = false,
-  },
-  %
-  % 按照 Word 模板的格式，五级节标题：宋体 12 磅，左缩进两字，行距 20 磅，
-  % 段前段后 0 磅，序号使用全宽括号，与题名间空半字宽。
-  subparagraph = {
-    format     = \rmfamily\fontsize{12bp}{20bp}\selectfont,
-    number     = \ustc@textcircled{subparagraph},
-    aftername  = \hspace{0.5\ccwd},
-    indent     = 2\ccwd,
-    beforeskip = \z@,
-    afterskip  = \z@,
-    runin      = false,
+    aftername  = \hspace{0.3\ccwd},
+    beforeskip = 12bp,
+    afterskip  = 6bp,
   },
 }
 
@@ -2336,13 +2315,13 @@
 % 中文摘要环境。
 \newcommand\ustc@keywords@text{%
   \ifustc@degree@graduate
-    \ustc@clist@use{\ustc@keywords}{\quad}%
+    \ustc@clist@use{\ustc@keywords}{，}%
   \else
     \ustc@clist@use{\ustc@keywords}{、}%
   \fi
 }
 \newcommand\ustc@keywords@en@text{%
-  \ustc@clist@use{\ustc@keywords@en}{, }%
+  \ustc@clist@use{\ustc@keywords@en}{,}%
 }
 \newenvironment{abstract}{%
   \ustcsetup{language=chinese}%
@@ -2360,7 +2339,7 @@
 \newenvironment{abstract*}{%
   \ustcsetup{language=english}%
   \ifustc@degree@graduate
-    \ustc@chapter[Abstract]{ABSTRACT}%
+    \ustc@chapter{ABSTRACT}%
   \else
     \begingroup
       % 本科生的英文摘要使用小二号衬线体
@@ -2370,10 +2349,10 @@
   \fi
 }{
   \par\null\par\noindent
-  \savebox\ustc@keywords@box{\textbf{Key Words}: }%
+  \savebox\ustc@keywords@box{\textbf{Keywords:} }%
   \ustc@keywords@width=\linewidth
   \advance\ustc@keywords@width-\wd\ustc@keywords@box
-  \textbf{Key Words}: \parbox[t]{\ustc@keywords@width}{\ustc@keywords@en@text\par}\par
+  \textbf{Keywords:} \parbox[t]{\ustc@keywords@width}{\ustc@keywords@en@text\par}\par
   \ifustc@degree@graduate
     \cleardoublepage
   \fi
@@ -2404,31 +2383,32 @@
 
 % 下面用 \pkg{titletoc} 宏包设置目录内容的格式。
 % 先定义目录线：
-\newcommand\ustc@leaders{\titlerule*[9bp]{\textperiodcentered}}
+% \newcommand\ustc@leaders{\titlerule*[9bp]{\textperiodcentered}}
+\newcommand\ustc@leaders{\titlerule*{\textperiodcentered}}
 
 % 各章目录要求宋体 14 磅，单倍行距，段前 6 磅，段后 0 磅，两端对齐，
 % 页码右对齐，章序号与章名间空一字。
 % 但是 Word 模板中实际是行距 20 磅。
 \ifustc@degree@graduate
   \titlecontents{chapter}
-    [\z@]{\addvspace{6bp}\fontsize{14bp}{20bp}\selectfont}
-    {\contentspush{\thecontentslabel\hspace{\ccwd}}}{}
-    {\fontsize{12bp}{20bp}\selectfont\ustc@leaders\contentspage}
+    [0pt]{\heiti\fontsize{12bp}{20bp}\selectfont}
+    {\contentspush{\thecontentslabel\hspace{0.5\ccwd}}}{}
+    {\selectfont\ustc@leaders\contentspage}
     %
     % 一级节标题目录要求宋体 12 磅，单倍行距，左缩进一字，段前 6 磅，段后 0 磅，
     % 两端对齐，页码右对齐，序号与题名间空一字。
     % Word 模板中实际是行距 20 磅，段前 0 磅。
   \titlecontents{section}
-    [\ccwd]{\fontsize{12bp}{20bp}\selectfont}
-    {\contentspush{\thecontentslabel\hspace{\ccwd}}}{}
+    [1.7\ccwd]{\fontsize{12bp}{20bp}\selectfont}
+    {\contentspush{\thecontentslabel\hspace{0.5\ccwd}}}{}
     {\ustc@leaders\contentspage}
     %
     % 二级节标题目录要求仿宋 12 磅，单倍行距，左缩进两字，段前 6 磅，段后 0 磅，
     % 两端对齐，页码右对齐，序号与题名间空一字。
     % Word 模板中实际是行距 20 磅，段前 0 磅。
   \titlecontents{subsection}
-    [2\ccwd]{\fangsong\fontsize{12bp}{20bp}\selectfont}
-    {\contentspush{\thecontentslabel\hspace{\ccwd}}}{}
+    [3.6\ccwd]{\fontsize{12bp}{20bp}\selectfont}
+    {\contentspush{\thecontentslabel\hspace{0.5\ccwd}}}{}
     {\ustc@leaders\contentspage}
     %
     % 本科生的目录使用小四宋体（同正文字体），其他同研究生的格式相近。
@@ -2592,6 +2572,11 @@
   \hb@xt@2\ccwd{\hss\@makefnmark}#1}
 
 
+% 公式以及图标的编号方式
+\renewcommand{\theequation}{\arabic{chapter}-\arabic{equation}}
+\renewcommand{\thetable}{\arabic{chapter}-\arabic{table}}
+\renewcommand{\thefigure}{\arabic{chapter}-\arabic{figure}}
+
 % \subsection{列表}
 % \label{sec:list}
 
@@ -2637,13 +2622,15 @@
 
 % 用 \pkg{caption} 宏包设置图、表的格式：
 
-% 图号、图题置于图的下方，宋体 10.5 磅居中，单倍行距，段前 6 磅，段后 12 磅，
+% TODO: 图片行 段前 6 磅，段后 0 磅
+% 图题置于图的下方，宋体 10.5 磅居中，段前 6 磅，段后 12 磅，左右缩进 4 个字符
 % 图号与图题文字之间空一字，图号、图题加粗。
 % 图注位于图的下方，左缩进两字，续行悬挂缩进左对齐，两端对齐。
 
-% 表号、表题置于表的上方，黑体 10.5 磅居中，单倍行距，段前 6 磅，段后 6 磅，
+% 表题置于表的上方，黑体 10.5 磅居中，单倍行距，段前 12 磅，段后 6 磅，左右缩进 4 个字符
 % 表号与表题文字之间空一字，表号、表题加粗。
 % 表注左缩进两字，续行悬挂缩进左对齐，两端对齐。
+
 \setlength{\floatsep}{6bp}
 \setlength{\textfloatsep}{6bp}
 \setlength{\intextsep}{6bp}
@@ -2657,18 +2644,21 @@
 }
 
 \captionsetup{
-  font           = ustc,
-  labelsep       = quad,
-  skip           = 6bp,
+  width          = \textwidth - 8\ccwd,
+  font           = {doublespacing, small},
+  labelsep       = space,
+  skip           = 6pt,
   figureposition = bottom,
   tableposition  = top,
 }
-\ifustc@degree@graduate
-  \captionsetup{font+=bf}
-  \captionsetup[table]{font+=sf}
-\fi
+
 \captionsetup[figure]{
-  belowskip = 6bp,
+  aboveskip = 6bp,
+  belowskip = 0bp,
+}
+\captionsetup[table]{
+  aboveskip = 9bp,
+  belowskip = 0bp,
 }
 
 % 由于 LaTeX2e kernel 的问题，图表等浮动体与文字前后的距离不一致，需要进行 patch。
@@ -2723,6 +2713,13 @@
 }{%
   \small
 }{}{\ustc@patch@error{\@floatboxreset}}
+
+% 三线表线宽: 上下边线线宽 1.5 磅，表内线条线宽 0.75 磅
+\setlength{\heavyrulewidth}{1.5bp}
+\setlength{\lightrulewidth}{0.75bp}
+\setlength{\cmidrulewidth}{0.75bp}
+% 其他线宽
+\setlength{\arrayrulewidth}{0.75bp}
 
 % 对 \pkg{longtable} 跨页表格进行相同的设置。
 %

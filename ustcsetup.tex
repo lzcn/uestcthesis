@@ -1,28 +1,28 @@
 % !TeX root = ./main.tex
 
 \ustcsetup{
-  title              = {中国科学技术大学\\学位论文模板示例文档 v\ustcthesisversion},
-  title*             = {An example of thesis template for University of Science
-                        and Technology of China v\ustcthesisversion},
-  author             = {李泽平},
-  author*            = {Li Zeping},
-  speciality         = {数学与应用数学},
-  speciality*        = {Mathematics and Applied Mathematics},
-  supervisor         = {XXX~教授, XXX~教授},
+  title              = {5G移动通信基站天线关键技术及其特征模分析方法研究},
+  title*             = {Key Technologies and Characteristic Mode Analysis Methods for 5G Base Station Antennas},
+  author             = {张某},
+  author*            = {Zhang Mou},
+  speciality         = {电磁场与微波技术},
+  speciality*        = {Electromagnetic Field and Microwave Technology},
+  supervisor         = {李某某, 教授},
   supervisor*        = {Prof. XXX, Prof. XXX},
   % date               = {2017-05-01},  % 默认为今日
   % professional-type  = {专业学位类型},
   % professional-type* = {Professional degree type},
-  % department         = {数学科学学院},  % 院系，本科生需要填写
-  % student-id         = {PB11001000},  % 学号，本科生需要填写
+  department         = {电子科技与工程学院},
+  student-id         = {2017XXXXXXXX},
   % secret-level       = {秘密},     % 绝密|机密|秘密|控阅，注释本行则公开
   % secret-level*      = {Secret},  % Top secret | Highly secret | Secret
   % secret-year        = {10},      % 保密/控阅期限
   % reviewer           = true,      % 声明页显示“评审专家签名”
-  %
+  % udc                = {621.39}   % 国际十进分类法 UDC 的类号
+  % book-class         = {TN828.6}, % 中图法分类号 http://pss.uestc.edu.cn:8080/chineseSearch.action
   % 数学字体
-  % math-style         = GB,  % 可选：GB, TeX, ISO
-  math-font          = xits,  % 可选：stix, xits, libertinus
+  math-style         = GB,  % 可选：GB, TeX, ISO
+  math-font          = lm,  % 可选：stix, xits, libertinus
 }
 
 
@@ -34,11 +34,12 @@
 % 插图
 \usepackage{graphicx}
 
-% 三线表
-\usepackage{booktabs}
-
 % 跨页表格
 \usepackage{longtable}
+\usepackage{tabularx}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
 
 % 算法
 \usepackage[ruled,linesnumbered]{algorithm2e}
