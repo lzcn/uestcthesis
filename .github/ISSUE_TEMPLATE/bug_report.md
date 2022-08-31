@@ -7,7 +7,7 @@ about: 报告模板中的 bug，帮助我们改进
 ## 检查
 - [ ] 已经阅读《研究生学位论文撰写手册》或《中国科学技术大学本科毕业论文（设计）格式》
 - [ ] 已经将模板升级到了最新版
-- [ ] 已经阅读使用说明文档 `ustcthesis.pdf`
+- [ ] 已经阅读使用说明文档 `uestcthesis.pdf`
 - [ ] 已经阅读 [常见问题](https://github.com/ustctug/ustcthesis/wiki/常见问题)
 
 ## 编译环境
@@ -23,7 +23,7 @@ about: 报告模板中的 bug，帮助我们改进
 
 复现上述问题的代码：
 ```TeX
-\documentclass[degree=doctor]{ustcthesis}
+\documentclass[degree=doctor]{uestcthesis}
 \begin{document}
 abc
 \end{document}

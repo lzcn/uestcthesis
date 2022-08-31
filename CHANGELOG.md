@@ -117,7 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- 使用 `\ustcsetup` 进行设置。
+- 使用 `\uestcsetup` 进行设置。
 - 目录开启于奇数页。
 
 ### Added

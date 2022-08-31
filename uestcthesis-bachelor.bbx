@@ -1,12 +1,23 @@
-\ProvidesFile{ustcthesis-authoryear.bbx}[2021/01/19 v1.0 USTCThesis biblatex
+\ProvidesFile{uestcthesis-bachelor.bbx}[2021/01/19 v1.0 UESTCThesis biblatex
   bibliography style]
 
-\RequireBibliographyStyle{gb7714-2015ay}
+\RequireBibliographyStyle{gb7714-2015}
 
-\ExecuteBibliographyOptions{gbpub = false}
+\ExecuteBibliographyOptions{
+  gbnamefmt   = lowercase,
+  gbtype      = false,
+  gbpub       = false,
+  gbalign     = left,
+  gbpunctin   = false,
+  maxbibnames = 3, %将文献列表和引用中最大名字数量区分开
+  minbibnames = 3,
+}
 
-\DeclareDelimFormat{nameyeardelim}{\addperiod\space}
-\DeclareDelimFormat[bib,biblist]{nameyeardelim}{\addperiod\space}
+\renewrobustcmd*{\bibinitdelim}{}
+
+\DeclareDelimFormat[bib,biblist]{andothersdelim}{%
+  \iffieldequalstr{userd}{english}{\addcomma\addspace}{}%
+}
 
 \DeclareFieldFormat{sentencecase}{%
   \iftoggle{bbx:titlelink}{%
@@ -46,7 +57,7 @@
         }}{}%
      %\iffieldundef{booktitle}{\newunit}{}%当title是析出时，不要标点
      %\newunit
-     }%
+}%
 }}
 
 \renewbibmacro*{maintitle}{%
@@ -58,7 +69,7 @@
     {}
     {\printtext[maintitle]{%
        % 在 maintitle+title 使用 sentence case，但是在 maintitle+booktitle 使用 title case
-       % \printfield[titlecase]{maintitle}%
+       \printfield[titlecase]{maintitle}%
        \iffieldundef{booktitle}{%
          \printfield[sentencecase]{maintitle}%
        }{%
@@ -75,33 +86,34 @@
      \newunit}%
   \printfield{maintitleaddon}}
 
-
-%
-%   重设专利title的输出，将文献类型标识符输出出去
-%
-\renewbibmacro*{patenttitle}{%原输出来自biblatex.def文件
-  \ifboolexpr{%
-    test{\iffieldundef{title}}%
-    and%
-    test{\iffieldundef{subtitle}}%
+\DeclareFieldFormat[book,proceedings,thesis]{title}{%
+  \iffieldequalstr{userd}{english}{%
+    \mkbibemph{#1}%
+  }{%
+    #1%
   }%
-    {}%
-    {\printtext[title]{\bibtitlefont%
-       \printfield[sentencecase]{title}%
-       \ifboolexpr{test {\iffieldundef{subtitle}}}
-       {}{\setunit{\subtitlepunct}%
-       \printfield[sentencecase]{subtitle}}%
-       \iffieldundef{titleaddon}{}
-        {\setunit{\subtitlepunct}\printfield{titleaddon}}%
-       % \setunit{\subtitlepunct}\printfield{number}%写专利号
-       \setunit{\subtitlepunct}%
-       \iflistundef{location}{}
-        {\printlist{location}\setunit{\addcomma\space}}% 专利国别
-       \printfield{number}%写专利号
-       \iftoggle{bbx:gbtype}{\printfield[gbtypeflag]{usera}}{}%
-     %\iffieldundef{booktitle}{\newunit}{}%当title是析出时，不要标点
-     %\newunit
-     }%
-}%
-\clearlist{location}\clearlist{address}%
 }
+
+\DeclareFieldFormat{booktitle}{%
+  \iffieldequalstr{userd}{english}{%
+    \mkbibemph{#1}%
+  }{%
+    #1%
+  }%
+}
+
+\DeclareFieldFormat{journaltitle}{%
+  \iffieldequalstr{userd}{english}{%
+    \mkbibemph{#1}%
+  }{%
+    #1\isdot
+  }%
+}
+
+\DefineBibliographyExtras{english}{%
+  \renewcommand*{\bibrangedash}{%
+    \iffieldequalstr{userd}{chinese}{～}{-}%
+  }%
+}
+
+\renewcommand*{\finentrypunct}{}

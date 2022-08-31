@@ -115,13 +115,13 @@
 \date{2022-06-27 \quad v0.0.1}
 \maketitle
 \begin{abstract}
-  本模板基于中科大的\href{https://github.com/ustctug/ustcthesis}{论文模板}项目修改，旨在提供一个易于后续维护的非官方版本。
+  本模板基于中科大的\href{https://github.com/ustctug/uestcthesis}{论文模板}项目修改，旨在提供一个易于后续维护的非官方版本。
 \end{abstract}
 \tableofcontents
 
 \section{简介}
 
-本模板 \cls{ustcthesis} 是中国科学技术大学本科生和研究生学位论文的 \LaTeX{}
+本模板 \cls{uestcthesis} 是中国科学技术大学本科生和研究生学位论文的 \LaTeX{}
 模板， 按照《\href{https://gradschool.ustc.edu.cn/static/upload/article/picture/ce3b02e5f0274c90b9331ef50ae1ac26.pdf}
 {中国科学技术大学研究生学位论文撰写手册}》和
 《\href{https://www.teach.ustc.edu.cn/?attachment_id=13867}
@@ -135,16 +135,16 @@
 
 下载地址：
 \begin{itemize}
-  \item 主要地址：\url{https://github.com/ustctug/ustcthesis/releases}
-  \item 学校镜像：\url{https://git.lug.ustc.edu.cn/ustctug/ustcthesis}
+  \item 主要地址：\url{https://github.com/ustctug/uestcthesis/releases}
+  \item 学校镜像：\url{https://git.lug.ustc.edu.cn/ustctug/uestcthesis}
   \item 研究生院网站（版本较旧）：
     \url{https://gradschool.ustc.edu.cn/column/65}
 \end{itemize}
 
-用户在使用 \pkg{ustcthesis} 模板前，应先阅读学校的《撰写手册》等规范。
+用户在使用 \pkg{uestcthesis} 模板前，应先阅读学校的《撰写手册》等规范。
 如果在使用的过程中遇到问题，可以阅读
-\href{https://github.com/ustctug/ustcthesis/wiki}{常见问题}，
-或者在 \href{https://github.com/ustctug/ustcthesis/issues}{GitHub Issues}
+\href{https://github.com/ustctug/uestcthesis/wiki}{常见问题}，
+或者在 \href{https://github.com/ustctug/uestcthesis/issues}{GitHub Issues}
 中反馈。
 
 
@@ -162,20 +162,20 @@
     \toprule
     类别     & 文件                      & 说明                         \\
     \midrule
-    模板文件 & \file{ustcthesis.cls}     & 模板文件                     \\
-             & \file{ustcthesis-*.bst}   & \BibTeX{} 参考文献表格式     \\
-             & \file{ustcthesis-*.bbx}   & BibLaTeX 参考文献表格式      \\
-             & \file{ustcthesis-*.cbx}   & BibLaTeX 参考文献表格式      \\
-             & \file{figures/ustc-*.pdf} & 校名和校徽图片               \\
+    模板文件 & \file{uestcthesis.cls}     & 模板文件                     \\
+             & \file{uestcthesis-*.bst}   & \BibTeX{} 参考文献表格式     \\
+             & \file{uestcthesis-*.bbx}   & BibLaTeX 参考文献表格式      \\
+             & \file{uestcthesis-*.cbx}   & BibLaTeX 参考文献表格式      \\
+             & \file{figures/uestc-*.pdf} & 校名和校徽图片               \\
     \midrule
-    使用说明 & \file{ustcthesis-doc.tex} & 模板使用说明的源代码         \\
-             & \file{ustcthesis-doc.pdf} & （你正在阅读的）模板使用说明 \\
+    使用说明 & \file{uestcthesis-doc.tex} & 模板使用说明的源代码         \\
+             & \file{uestcthesis-doc.pdf} & （你正在阅读的）模板使用说明 \\
     \midrule
     示例文档 & \file{main.tex}           & 主文档                       \\
-             & \file{ustcsetup.tex}      & 配置文件                     \\
+             & \file{uestcsetup.tex}      & 配置文件                     \\
              & \file{chapters/*.tex}     & 示例文档的各个章节           \\
              & \file{figures/}           & 放置图片的目录               \\
-             & \file{bib/ustc.bib}       & \BibTeX{} 示例数据库         \\
+             & \file{bib/uestc.bib}       & \BibTeX{} 示例数据库         \\
     \midrule
     其他     & \file{README.md}          & 基本说明                     \\
              & \file{CHANGELOG.md}       & 更新日志                     \\
@@ -241,7 +241,7 @@ Linux/Mac用户，可以直接使用 GNU make 工具，这是最简单的方法�
 \begin{shell}
   make
 \end{shell}
-编译说明文档 \file{ustcthesis-doc.pdf}：
+编译说明文档 \file{uestcthesis-doc.pdf}：
 \begin{shell}
   make doc
 \end{shell}
@@ -256,7 +256,7 @@ Windows 用户可能无法使用GNU make，使用 |latexmk| 也是一个比较�
 \end{shell}
 编译说明文档：
 \begin{shell}
-  latexmk -xelatex ustcthesis-doc.tex
+  latexmk -xelatex uestcthesis-doc.tex
 \end{shell}
 清理辅助文件可以用 \shellcmd{latexmk -c}。图形界面用户应参考编辑器的使用说明。
 
@@ -270,10 +270,10 @@ Windows 用户可能无法使用GNU make，使用 |latexmk| 也是一个比较�
   xelatex main.tex
   xelatex main.tex
 \end{shell}
-编译说明文档 \file{ustcthesis-doc.pdf}：
+编译说明文档 \file{uestcthesis-doc.pdf}：
 \begin{shell}
-  xelatex ustcthesis-doc.tex
-  xelatex ustcthesis-doc.tex
+  xelatex uestcthesis-doc.tex
+  xelatex uestcthesis-doc.tex
 \end{shell}
 \end{enumerate}
 
@@ -286,19 +286,19 @@ Windows 用户可能无法使用GNU make，使用 |latexmk| 也是一个比较�
 \DescribeOption{degree}
 选择学位，支持 \opt{bachelor}，\opt{master}，\opt{doctor}（默认）。
 \begin{latex}
-  \documentclass[degree=doctor]{ustcthesis}
+  \documentclass[degree=doctor]{uestcthesis}
 \end{latex}
 
 \DescribeOption{degree-type}
 学位类型。可选：学术型 \opt{academic}（默认），专业型 \opt{professional}。
 \begin{latex}
-  \documentclass[degree-type=professional]{ustcthesis}
+  \documentclass[degree-type=professional]{uestcthesis}
 \end{latex}
 
 \DescribeOption{language}
 论文全文的主要语言。可选：\opt{chinese}（默认），\opt{english}。
 \begin{latex}
-  \documentclass[language=english]{ustcthesis}
+  \documentclass[language=english]{uestcthesis}
 \end{latex}
 
 \DescribeOption{output}
@@ -308,7 +308,7 @@ Windows 用户可能无法使用GNU make，使用 |latexmk| 也是一个比较�
   \item \opt{electronic}：单面，并保留超链接颜色
 \end{itemize}
 \begin{latex}
-  \documentclass[output=electronic]{ustcthesis}
+  \documentclass[output=electronic]{uestcthesis}
 \end{latex}
 
 \DescribeOption{section-style}
@@ -318,7 +318,7 @@ Windows 用户可能无法使用GNU make，使用 |latexmk| 也是一个比较�
   \item \opt{arabic}：阿拉伯数字序号
 \end{itemize}
 \begin{latex}
-  \documentclass[section-style=arabic]{ustcthesis}
+  \documentclass[section-style=arabic]{uestcthesis}
 \end{latex}
 
 
@@ -327,7 +327,7 @@ Windows 用户可能无法使用GNU make，使用 |latexmk| 也是一个比较�
 \DescribeOption{fontset}
 用户也可以通过 \opt{fontset} 时指定使用预设的字库，如：
 \begin{latex}
-  \documentclass[fontset=windows]{ustcthesis}
+  \documentclass[fontset=windows]{uestcthesis}
 \end{latex}
 允许的选项有 \opt{windows}、\opt{mac}、\opt{ubuntu} 和 \opt{fandol}，
 具体使用的字体见表~\ref{tab:fontset}。
@@ -372,10 +372,10 @@ Windows 用户可能无法使用GNU make，使用 |latexmk| 也是一个比较�
 开始。
 
 \DescribeMacro{\maketitle}
-封面由 \cs{maketitle} 命令生成，其中的各项信息使用 \cs{ustcsetup} 命令以
+封面由 \cs{maketitle} 命令生成，其中的各项信息使用 \cs{uestcsetup} 命令以
 key-value 的方式填写，如：
 \begin{latex}
-  \ustcsetup{
+  \uestcsetup{
     title  = {论文中文题目},
     title* = {Thesis English Title},
   }
@@ -402,7 +402,7 @@ key-value 的方式填写，如：
 
 有几点说明：
 \begin{itemize}
-  \item \cs{ustcsetup} 使用 \pkg{kvsetkeys} 机制，配置项之间不能有空行，否则会报错。
+  \item \cs{uestcsetup} 使用 \pkg{kvsetkeys} 机制，配置项之间不能有空行，否则会报错。
   \item 其中带 |*| 后缀的选项用于设置英文封面。
   \item 导师姓名 \opt{supervisor} 允许多个姓名，使用“,”（西文逗号 U+002C）隔开。
   \item 软件工程专业使用 \opt{advisor} 和 \opt{advisor*} 设置企业导师的姓名。
@@ -414,7 +414,7 @@ key-value 的方式填写，如：
 \opt{secret-year} 的内容自动填写。
 
 \DescribeOption{reviewer}
-有的院系额外要求声明页有“评审专家签名”，可以在模板中使用 \cs{ustcsetup} 命令设置
+有的院系额外要求声明页有“评审专家签名”，可以在模板中使用 \cs{uestcsetup} 命令设置
 \opt{reviewer = true}。
 
 
@@ -424,7 +424,7 @@ key-value 的方式填写，如：
 \DescribeEnv{notation}
 \DescribeEnv{acknowledgements}
 \DescribeEnv{publications}
-对于特殊的章节，\cls{ustcthesis} 还提供了相应的环境：
+对于特殊的章节，\cls{uestcthesis} 还提供了相应的环境：
 \begin{itemize}
   \item 中文摘要：\env{abstract}
   \item 英文摘要：\env{abstract*}
@@ -435,12 +435,12 @@ key-value 的方式填写，如：
 
 \DescribeOption{keywords}
 \DescribeOption{keywords*}
-摘要的关键词应使用 \cs{ustcsetup} 的接口进行设置，在录入时使用西文逗号隔开，
+摘要的关键词应使用 \cs{uestcsetup} 的接口进行设置，在录入时使用西文逗号隔开，
 比如：
 \begin{latex}
   \begin{abstract}
     这里是摘要。
-    \ustcsetup{
+    \uestcsetup{
       keywords  = {学位论文, 摘要, 关键词},
       keywords* = {dissertation, abstract, keywords},
     }
@@ -487,7 +487,7 @@ key-value 的方式填写，如：
 用户可以通过设置 \opt{math-style} 选择数学符号样式（可选：
 \opt{GB}（中文默认），\opt{TeX}（英文默认）和 \opt{ISO}），比如：
 \begin{latex}
-  \ustcsetup{
+  \uestcsetup{
     math-style = ISO,
   }
 \end{latex}
@@ -521,7 +521,7 @@ key-value 的方式填写，如：
 
 如果数学符号选择国标样式 |math-style = GB|，相当于设置了
 \begin{latex}
-  \ustcsetup{
+  \uestcsetup{
     uppercase-greek    = italic,
     less-than-or-equal = slanted,
     integral           = upright,
@@ -585,13 +585,13 @@ key-value 的方式填写，如：
 \begin{latex}
   % 顺序编码制
   \usepackage[sort]{natbib}
-  \bibliographystyle{ustcthesis-numeric}
+  \bibliographystyle{uestcthesis-numeric}
 \end{latex}
 或者
 \begin{latex}
   % 著者-出版年制
   \usepackage{natbib}
-  \bibliographystyle{ustcthesis-authoryear}
+  \bibliographystyle{uestcthesis-authoryear}
 \end{latex}
 并且在生成参考文献表的位置使用 \cs{bibliography} 设置 \file{.bib} 数据库的路径。
 然后使用 \file{bibtex} 编译生成 \file{.bbl} 文件。
@@ -609,7 +609,7 @@ key-value 的方式填写，如：
 
 模板默认为上标样式，也可以将引用标注统一设为 \opt{inline} 样式。
 \begin{latex}
-  \ustcsetup{
+  \uestcsetup{
     cite-style = inline,
   }
 \end{latex}
@@ -656,8 +656,8 @@ BibLaTeX 是较新的参考文献处理方案。
 并且在导言区使用 \cs{addbibresource} 设置数据库的路径，
 最后在参考文献表的位置使用 \cs{printbibliography} 输出。
 \begin{latex}
-  \usepackage[style=ustcthesis-authoryear]{biblatex}
-  \addbibresource{bib/ustc.bib}
+  \usepackage[style=uestcthesis-authoryear]{biblatex}
+  \addbibresource{bib/uestc.bib}
 \end{latex}
 使用 BibLaTeX 必须用 \file{biber} 编译生成参考文献表。
 这里的样式是在 \href{https://ctan.org/pkg/biblatex-gb7714-2015}{biblatex-gb7714-2015}
@@ -668,8 +668,8 @@ BibLaTeX 是较新的参考文献处理方案。
 如果要切换为与正文平排，一种方法是使用 \cs{parencite}，
 另一种是载入 \pkg{biblatex} 时统一设置。
 \begin{latex}
-  \usepackage[bibstyle=ustcthesis-numeric,
-              citestyle=ustcthesis-inline]{biblatex}
+  \usepackage[bibstyle=uestcthesis-numeric,
+              citestyle=uestcthesis-inline]{biblatex}
 \end{latex}
 
 \end{document}

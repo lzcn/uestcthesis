@@ -1,6 +1,6 @@
 #!/usr/bin/env texlua
 
-module = "ustcthesis"
+module = "uestcthesis"
 
 testfiledir = "./test/testfiles"
 testsuppdir = "./test/support"
@@ -8,7 +8,7 @@ testsuppdir = "./test/support"
 demofiles = {"main.tex", "bib", "chapters"}
 installfiles = {"*.cls", "*.bst", "*.bbx", "*.cbx", "figures"}
 sourcefiles = {"*.cls", "*.bst", "*.bbx", "*.cbx", "figures"}
-tagfiles = {"*.cls", "ustcthesis-doc.tex", "CHANGELOG.md", "main.tex"}
+tagfiles = {"*.cls", "uestcthesis-doc.tex", "CHANGELOG.md", "main.tex"}
 
 checkengines = {"xetex"}
 stdengine = "xetex"
@@ -31,15 +31,15 @@ lvtext = ".tex"
 
 function update_tag(file, content, tagname, tagdate)
   tagname = string.gsub(tagname, "^v", "")
-  local url = "https://github.com/ustctug/ustcthesis"
+  local url = "https://github.com/lzcn/uestcthesis"
   local date = string.gsub(tagdate, "%-", "/")
 
   if string.match(file, "%.cls$") then
-    content = string.gsub(content, "\\newcommand\\ustcthesisversion{[0-9.]+",
-      "\\newcommand\\ustcthesisversion{" .. tagname)
+    content = string.gsub(content, "\\newcommand\\uestcthesisversion{[0-9.]+",
+      "\\newcommand\\uestcthesisversion{" .. tagname)
 
-    content = string.gsub(content, "\\ProvidesClass{ustcthesis}%[%d%d%d%d/%d%d/%d%d",
-      "\\ProvidesClass{ustcthesis}[" .. date)
+    content = string.gsub(content, "\\ProvidesClass{uestcthesis}%[%d%d%d%d/%d%d/%d%d",
+      "\\ProvidesClass{uestcthesis}[" .. date)
 
   elseif string.match(file, "%-doc.tex") then
     content = string.gsub(content, "v[0-9.]+\\qquad %d%d%d%d%-%d%d%-%d%d",

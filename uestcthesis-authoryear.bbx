@@ -1,12 +1,12 @@
-\ProvidesFile{ustcthesis-numeric.bbx}[2021/01/19 v1.0 USTCThesis biblatex
+\ProvidesFile{uestcthesis-authoryear.bbx}[2021/01/19 v1.0 UESTCThesis biblatex
   bibliography style]
 
-\RequireBibliographyStyle{gb7714-2015}
+\RequireBibliographyStyle{gb7714-2015ay}
 
-\ExecuteBibliographyOptions{
-  gbpub     = false,
-  gbalign   = left,
-}
+\ExecuteBibliographyOptions{gbpub = false}
+
+\DeclareDelimFormat{nameyeardelim}{\addperiod\space}
+\DeclareDelimFormat[bib,biblist]{nameyeardelim}{\addperiod\space}
 
 \DeclareFieldFormat{sentencecase}{%
   \iftoggle{bbx:titlelink}{%
@@ -46,7 +46,7 @@
         }}{}%
      %\iffieldundef{booktitle}{\newunit}{}%当title是析出时，不要标点
      %\newunit
-}%
+     }%
 }}
 
 \renewbibmacro*{maintitle}{%
@@ -58,7 +58,7 @@
     {}
     {\printtext[maintitle]{%
        % 在 maintitle+title 使用 sentence case，但是在 maintitle+booktitle 使用 title case
-       \printfield[titlecase]{maintitle}%
+       % \printfield[titlecase]{maintitle}%
        \iffieldundef{booktitle}{%
          \printfield[sentencecase]{maintitle}%
        }{%
