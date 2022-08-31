@@ -1712,6 +1712,14 @@
     default = {Supervisor Name},
     name    = supervisor@en,
   },
+  supervisor-type = {
+    default = {教授},
+    name    = supervisor@type
+  },
+  supervisor-type* = {
+    default = {Prof.},
+    name    = supervisor@type@en,
+  },
   advisor = {
     default = {},
   },
@@ -1729,6 +1737,10 @@
     name = professional@type@en,
   },
   department,
+  department* = {
+    default  = {},
+    name     = department@en,
+  },
   student-id = {
     name = student@id,
   },
@@ -1841,13 +1853,16 @@
 
 % 定义一些常量。
 \ifuestc@degree@doctor
+  \newcommand\uestc@degree@name{博士}
   \newcommand\uestc@thesis@name{博士学位论文}
   \newcommand\uestc@thesis@name@en{A Doctoral Dissertation}
 \else
   \ifuestc@degree@master
-    \newcommand\uestc@thesis@name{硕士学位论文}
+  \newcommand\uestc@degree@name{硕士}
+  \newcommand\uestc@thesis@name{硕士学位论文}
     \newcommand\uestc@thesis@name@en{A dissertation for master's degree}
   \else
+    \newcommand\uestc@degree@name{学士}
     \newcommand\uestc@thesis@name{学士学位论文}
     \newcommand\uestc@thesis@name@en{A dissertation for bachelor's degree}
   \fi
@@ -1886,7 +1901,6 @@
 
 % 重定义 \env{titlepage} 环境，不修改页码。
 \renewenvironment{titlepage}{%
-  \cleardoublepage
   \if@twocolumn
     \@restonecoltrue\onecolumn
   \else
@@ -1907,45 +1921,138 @@
     % pdf 书签
     \uestc@pdfbookmark{封面}%
     \begin{center}
-      % 如果没有*，由于空白在行首，则会被丢弃。
-      % \vspace*{0.062cm}%
-      {%
-      % \renewcommand{\tempspace}{5pt}
-      \fontsize{22bp}{22bp}\selectfont 电\hspace{\tempspace}子\hspace{\tempspace}科\hspace{\tempspace}技\hspace{\tempspace}大\hspace{\tempspace}学\hspace{\tempspace}
+      % 用一个高为 1cm 的区域来放置校名
+      \parbox[c][1.0cm]{\textwidth}{%
+      % Word: No Spacing + 22 pt, Expanded by 5pt
+      \centering\fontsize{22pt}{22pt}\selectfont 电\hspace{\tempspace}子\hspace{\tempspace}科\hspace{\tempspace}技\hspace{\tempspace}大\hspace{\tempspace}学\hspace{\tempspace}
       }
-      \\[5pt]
-      \fontsize{12pt}{12pt}\selectfont UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA \\[52pt]
-      \fontsize{42pt}{42pt}\selectfont \uestc@thesis@name \\[12pt]
-      \fontsize{16pt}{16pt}\selectfont\textnormal{\MakeUppercase{Doctoral Dissertation}} \\[45pt]
-      \includegraphics[width=165bp]{figures/uestc-badge.pdf} \\[33pt]
+      \par
+      \parbox[c][0.45cm]{\textwidth}{%
+      % Word: No Spacing + 12 pt
+      \centering\fontsize{12pt}{12pt}\selectfont UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA
+      }
+      \par
+      \vskip 56pt
+      {\centering\fontsize{42pt}{42pt}\selectfont\uestc@thesis@name}
+      \par 
+      \vskip 7.2pt
+      {\centering\fontsize{16pt}{16pt}\selectfont{\MakeUppercase{Doctoral Dissertation}}} 
+      \par
+      \vskip 44pt
+      {\centering\includegraphics[width=164bp]{figures/uestc-badge.pdf}}
+      \par
+      \vskip 32.5pt
       % title
-      \setlength{\extrarowheight}{13pt}
-      \begin{tabular}{cp{4.5in}}
-      {\bfseries\fontsize{18pt}{26pt}\selectfont 论文题目 } 
-      & \multirow[t]{2}{4.5in}{\centering\bfseries\fontsize{18pt}{28pt}\selectfont\uestc@title} 
-      \\
-        \cline{2-2} & \\
-        \cline{2-2} & \\
-      \end{tabular}
-      % others
-      \hspace*{\fill}\\
-      [\baselineskip]
-      \begin{tabular}{>{\bfseries\fontsize{16pt}{16pt}\selectfont}l
-        >{\centering\arraybackslash\bfseries\fontsize{16pt}{16pt}\selectfont}
-        p{3.0in}p{15pt}}
-      学科专业 & \uestc@speciality &\\
-      \cline{2-2}
-      学\hspace{2\ccwd}号 & \uestc@student@id & \\
-      \cline{2-2}
-      作者姓名 & \uestc@author &\\
-      \cline{2-2}
-      指导老师 & \uestc@supervisor@names &\\
-      \cline{2-2}
-      学\hspace{2\ccwd}院 & \uestc@department &\\
-      \cline{2-2}
-      \end{tabular}
+      \begingroup
+        \setlength{\extrarowheight}{10pt}
+        \begin{tabular}{lp{10.4cm}p{1.4cm}}
+        {\bfseries\fontsize{18pt}{22pt}\selectfont 论文题目 } 
+        & \multirow[t]{2}{10.4cm}{\centering\bfseries\fontsize{18pt}{29pt}\selectfont\uestc@title} &
+        \\
+          \cline{2-2} & \\
+          \cline{2-2} & \\
+        \end{tabular}
+        % others
+        \hspace*{\fill}\\
+        [\baselineskip]
+        \begin{tabular}{>{\bfseries\fontsize{16pt}{16pt}\selectfont}l
+          >{\centering\bfseries\fontsize{16pt}{16pt}\selectfont}
+          p{3.0in}p{15pt}}
+        学科专业 & \uestc@speciality &\\
+        \cline{2-2}
+        学\hspace{2\ccwd}号 & \uestc@student@id & \\
+        \cline{2-2}
+        作者姓名 & \uestc@spacetitle{\uestc@author} &\\
+        \cline{2-2}
+        指导老师 & \uestc@spacetitle{\uestc@supervisor@names}\hspace{2\ccwd}\uestc@spacetitle{\uestc@supervisor@type} &\\
+        \cline{2-2}
+        学\hspace{2\ccwd}院 & \uestc@department &\\
+        \cline{2-2}
+        \end{tabular}
+    \endgroup
     \end{center}
   \end{titlepage}%
+
+  \begin{titlepage}
+    \setlength{\extrarowheight}{6pt}
+    \noindent
+    \begin{tabular}{>{\fontsize{12pt}{12pt}\selectfont}l
+      >{\centering\arraybackslash\fontsize{12pt}{12pt}\bfseries\selectfont}
+      p{2.1in}
+      >{\centering\fontsize{12pt}{12pt}\selectfont}l
+      >{\centering\arraybackslash\fontsize{12pt}{12pt}\bfseries\selectfont}
+      p{2.2in}}
+      分类号 &  & 密级 &  \\
+      \cline{2-2} \cline{4-4}
+      UDC\textsuperscript{注1} &  &  &  \\
+      \cline{2-2}
+    \end{tabular}
+    \vskip 0.75cm
+    \begin{center}
+      \fontsize{36pt}{36pt}\selectfont{
+        学\hspace{\ccwd}位\hspace{\ccwd}论\hspace{\ccwd}文
+      } 
+      \\
+      \vskip 1.05cm
+      \parbox[c]{0.65\textwidth}{\centering\fontsize{18pt}{24pt}\selectfont{\bfseries\uestc@title}} \\
+      \vspace{-18pt}
+      \rule{5.9in}{0.75pt} \\
+      \vspace{2pt}
+      \fontsize{12pt}{16pt}\selectfont（题名和副题名）\\
+      \vskip 0.75cm
+      \parbox[c]{0.65\textwidth}{\centering\fontsize{16pt}{18pt}\selectfont{\bfseries\uestc@author}} \\
+      \vspace{-6pt}
+      \rule{1.63in}{0.75pt} \\
+      \vspace{2pt}
+      \fontsize{12pt}{12pt}\selectfont（作者姓名） \\[56bp]
+      \setlength{\extrarowheight}{10pt}
+      \begin{tabular}{>{\fontsize{12pt}{12pt}\selectfont}r
+          >{\centering\arraybackslash\fontsize{16pt}{16pt}\selectfont}
+          p{2.27in}
+          >{\raggedright\arraybackslash\fontsize{16pt}{16pt}\selectfont}
+          p{1.2in}p{0.5in}}
+          指导老师 & {\bfseries\uestc@supervisor@names} & {\bfseries\uestc@spacetitle{\uestc@supervisor@type}} & \\
+          \cline{2-3}
+          & {\bfseries 电子科技大学} &  {\bfseries\uestc@spacetitle{成都}} &  \\
+          \cline{2-3}
+          & \multicolumn{2}{c}{\fontsize{12pt}{12pt}\selectfont（姓名、职称、单位名称）} & 
+      \end{tabular}  
+    \\[56bp]
+    \end{center}
+    \setlength{\extrarowheight}{4pt}
+    \noindent
+    \begin{tabular}{>{\fontsize{12pt}{12pt}\selectfont}l
+        >{\centering\arraybackslash\fontsize{14pt}{14pt}\bfseries\selectfont}
+        p{1.59in}
+        >{\centering\fontsize{12pt}{12pt}\selectfont}c
+        >{\centering\arraybackslash\fontsize{14pt}{14pt}\bfseries\selectfont}
+        p{1.60in}}
+        申请学位级别 & \uestc@degree@name & 学科专业 & \uestc@speciality \\
+        \cline{2-2} \cline{4-4}
+        提交论文日期 &  &  论文答辩日期 &  \\
+        \cline{2-2} \cline{4-4}
+    \end{tabular} \\
+    \begin{tabular}{>{\fontsize{12pt}{12pt}\selectfont}l
+        >{\centering\arraybackslash\fontsize{14pt}{14pt}\bfseries\selectfont}p{2.02in}
+        >{\centering\arraybackslash\fontsize{14pt}{14pt}\bfseries\selectfont}p{2.01in}}
+        学位授予单位和日期 & 电子科技大学 & 2021 年 6 月 \\
+      \cline{2-3}
+    \end{tabular} \\
+    \begin{tabular}{>{\fontsize{12pt}{12pt}\selectfont}l
+        >{\centering\arraybackslash\fontsize{14pt}{14pt}\heiti\selectfont}
+        p{4.37in}}
+        答辩委员会主席 & \\
+      \cline{2-2}
+    \end{tabular} \\
+    \begin{tabular}{>{\fontsize{12pt}{12pt}\selectfont}l
+        >{\centering\arraybackslash\fontsize{14pt}{14pt}\heiti\selectfont}
+        p{5.03in}}
+        评阅人 & \\
+      \cline{2-2}
+      \\
+      \multicolumn{2}{l}{\fontsize{12pt}{12pt}注1：注明《国际十进分类法UDC》的类号。}
+    \end{tabular}
+  \end{titlepage}
   \uestc@reset@main@language
 }
 
@@ -1968,20 +2075,20 @@
   University of Electronic Science and Technology of China\par}%
   \par{\vspace{3.2cm}}
   \noindent
+  \setlength{\extrarowheight}{10pt}
   \begin{tabular}{>{\fontsize{16pt}{16pt}\selectfont}r
     >{\centering\arraybackslash\bfseries\fontsize{16pt}{16pt}\selectfont}
-    p{10.6cm}}
-    Discipline: & \multirow[t]{2}{*}{\uestc@speciality@en} \\
+    p{11.8cm}}
+  Discipline & \multirow[t]{2}{8.6cm}{\centering\bfseries\fontsize{16pt}{28pt}\selectfont\uestc@speciality@en} \\
+  \cline{2-2} & \\
   \cline{2-2}
-  & \\
+  Author & \uestc@author@en \\
   \cline{2-2}
-  Author: & \uestc@author@en \\
+  Student ID & \uestc@student@id \\
   \cline{2-2}
-  Student ID: & \uestc@student@id \\
+  Supervisor & \uestc@supervisor@type@en \uestc@supervisor@en \\
   \cline{2-2}
-  Supervisor: & \uestc@advisor@en@line \\
-  \cline{2-2}
-  School: & University of Electronic Science and Technology of China \\
+  School & \multirow[t]{2}{*}{\centering\bfseries\fontsize{16pt}{28pt}\selectfont\uestc@department@en} \\
   \cline{2-2}
   \end{tabular}
   \end{titlepage}%
@@ -2072,7 +2179,7 @@
   \else
     \uestc@title@page@bachelor
   \fi
-  \cleardoublepage
+  % \cleardoublepage
   % \restoregeometry
   \pagestyle{plain}%
 }
@@ -2094,10 +2201,11 @@
   定，有权保留并向国家有关部门或机构送交论文的复印件和磁盘，允%
   许论文被查阅和借阅。本人授权电子科技大学可以将学位论文的全部%
   或部分内容编入有关数据库进行检索，可以采用影印、缩印或扫描等%
-  复制手段保存、汇编学位论文。\par（保密的学位论文在解密后应遵守此规定）}
+  复制手段保存、汇编学位论文。
+  \par（保密的学位论文在解密后应遵守此规定）}
   %
   % 生成空的下划线
-\newcommand\uestc@underline[2][3.2cm]{\underline{\hb@xt@ #1{\hss#2\hss}}}
+\newcommand\uestc@underline[2][3.45cm]{\underline{\hb@xt@ #1{\hss#2\hss}}}
 
 \newcommand\uestc@checkbox{%
   \makebox[\z@][l]{$\square$}%
@@ -2106,26 +2214,24 @@
 
 \newcommand\copyrightpage{%
   \begin{titlepage}%
-    \uestc@pdfbookmark{原创性和授权使用声明}%
-    \null
-    \vskip 0.3cm%
-    {\centering\sffamily\fontsize{16bp}{32bp}\selectfont
+    \uestc@pdfbookmark{原创性申明和论文使用授权}%
+    \vskip 1.0cm%
+    {\centering\fontsize{18bp}{18bp}\bfseries\selectfont%
     独创性声明\par}%
-    \vskip 0.7cm%
-    \uestc@originality\par
+    \vskip 1.0cm%
+    \fontsize{14bp}{30bp}\selectfont\uestc@originality\par
     \vskip 1.3cm%
-    作者签名：\uestc@underline{}\hspace{2.7cm}%
-    签字日期：\uestc@underline{}\par
+    作者签名：\uestc@underline{}\hspace{\fill}日期：\quad\quad 年\quad 月\quad 日\par
     \vskip 1.9cm%
-    {\centering\sffamily\fontsize{16bp}{32bp}\selectfont
-    论文使用声明\par}%
+    {\centering\fontsize{18bp}{18bp}\bfseries\selectfont%
+    论文使用授权\par}%
     \vskip 0.7cm%
-    \uestc@authorization\par
+    \fontsize{14bp}{30bp}\selectfont\uestc@authorization
+    \par
     \vskip 0.6cm%
-    作者签名：\uestc@underline{}\hspace{2.7cm}%
-    导师签名：\uestc@underline{}\par
+    作者签名：\uestc@underline{}\hspace{\fill}导师签名：\uestc@underline{}\par
     \vskip 0.5cm%
-    \hspace{8.0cm}日期：\uestc@underline{}\par
+    \hspace{\fill}日期：\quad\quad 年\quad 月\quad 日
   \end{titlepage}%
 }
 \ifuestc@degree@bachelor
