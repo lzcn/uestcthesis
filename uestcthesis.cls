@@ -1897,40 +1897,42 @@
   \if@restonecol\twocolumn \else \newpage \fi
 }
 
-% 中文封面：
-% 密级仿宋 14 磅；
-% 论文类型黑体 56 磅；
-% 论文题目黑体 26 磅加粗居中，单倍行距；
-% 作者姓名宋体 16 磅，单倍行距；
-% 注意这里的“单倍行距”的地方开启了“对齐到网格”，所以实际行距有所偏差，
-% 所以只能使用直尺测量。
 \newcommand\uestc@speciality@sse{软件工程}
+% 定义临时水平间距，用于调整文字间距。
+\newcommand\tempspace{10bp}
+% 研究生中文封面
 \newcommand\uestc@title@page@graduate@zh{%
   \uestcsetup{language=chinese}%
   \begin{titlepage}%
+    % pdf 书签
     \uestc@pdfbookmark{封面}%
     \begin{center}
-      % \linespread{1.391}
-      \vspace*{0.058cm}%
-      \fontsize{22pt}{22pt}\selectfont 电\hspace{0.505em}子\hspace{0.505em}科\hspace{0.505em}技\hspace{0.505em}大\hspace{0.505em}学 \\[5pt]
+      % 如果没有*，由于空白在行首，则会被丢弃。
+      % \vspace*{0.062cm}%
+      {%
+      % \renewcommand{\tempspace}{5pt}
+      \fontsize{22bp}{22bp}\selectfont 电\hspace{\tempspace}子\hspace{\tempspace}科\hspace{\tempspace}技\hspace{\tempspace}大\hspace{\tempspace}学\hspace{\tempspace}
+      }
+      \\[5pt]
       \fontsize{12pt}{12pt}\selectfont UNIVERSITY OF ELECTRONIC SCIENCE AND TECHNOLOGY OF CHINA \\[52pt]
       \fontsize{42pt}{42pt}\selectfont \uestc@thesis@name \\[12pt]
-      \fontsize{16pt}{16pt}\selectfont\textnormal{\MakeUppercase{Doctoral Dissertation}} \\[40pt]
-      \includegraphics[width=170bp]{figures/uestc-badge.pdf} \\[32bp]
+      \fontsize{16pt}{16pt}\selectfont\textnormal{\MakeUppercase{Doctoral Dissertation}} \\[45pt]
+      \includegraphics[width=165bp]{figures/uestc-badge.pdf} \\[33pt]
       % title
       \setlength{\extrarowheight}{13pt}
-      \begin{tabular}{lp{4.2in}}
-      {\bfseries\fontsize{18pt}{18pt}\selectfont 论文题目 } & \multirow[t]{2}{4.2in}{
-          \centering\bfseries\fontsize{18pt}{18pt}\selectfont\uestc@title
-        } \\
+      \begin{tabular}{cp{4.5in}}
+      {\bfseries\fontsize{18pt}{26pt}\selectfont 论文题目 } 
+      & \multirow[t]{2}{4.5in}{\centering\bfseries\fontsize{18pt}{28pt}\selectfont\uestc@title} 
+      \\
         \cline{2-2} & \\
         \cline{2-2} & \\
       \end{tabular}
       % others
-      \hspace*{\fill}\\[\baselineskip]    
+      \hspace*{\fill}\\
+      [\baselineskip]
       \begin{tabular}{>{\bfseries\fontsize{16pt}{16pt}\selectfont}l
         >{\centering\arraybackslash\bfseries\fontsize{16pt}{16pt}\selectfont}
-        p{3.77in}p{15pt}}
+        p{3.0in}p{15pt}}
       学科专业 & \uestc@speciality &\\
       \cline{2-2}
       学\hspace{2\ccwd}号 & \uestc@student@id & \\
@@ -1988,7 +1990,7 @@
 
 \newbox\uestc@title@box
 
-% 本科生的封面
+%  TODO: 本科生的封面
 \newcommand\uestc@title@page@bachelor{%
   \begin{titlepage}%
     \uestc@pdfbookmark{Title page}%
@@ -2061,7 +2063,7 @@
 % 重新定义 \cs{maketitle}，调用 \cs{uestc@makezhtitle}, \cs{uestc@makeentitle}
 % 分别生成中、英文封面。
 \renewcommand\maketitle{%
-  \newgeometry{margin=2.54cm}%
+  % \newgeometry{margin=3.0cm}%
   \pagenumbering{Alph}%
   \pagestyle{empty}%
   \ifuestc@degree@graduate
@@ -2071,7 +2073,7 @@
     \uestc@title@page@bachelor
   \fi
   \cleardoublepage
-  \restoregeometry
+  % \restoregeometry
   \pagestyle{plain}%
 }
 
