@@ -1602,11 +1602,9 @@
   % 页眉位于页面顶端居中书写，五号字
   % 页码位于页面底端居中书写，小五号字
   \ifuestc@degree@graduate
-    \def\uestc@hf@font{\fontsize{10.5bp}{12bp}\selectfont}
-    \fancyhead[CE]{\uestc@hf@font 电子科技大学\uestc@thesis@name}
-    \fancyhead[CO]{\uestc@hf@font\leftmark}%
-    \def\uestc@hf@font{\fontsize{9bp}{10.3bp}\selectfont}
-    \fancyfoot[C]{\uestc@hf@font\thepage}%
+    \fancyhead[CE]{\fontsize{10.5bp}{12bp}\selectfont 电子科技大学\uestc@thesis@name}
+    \fancyhead[CO]{\fontsize{10.5bp}{12bp}\selectfont \leftmark}%
+    \fancyfoot[C]{\fontsize{9bp}{10.3bp}\selectfont \thepage}%
     \let\@mkboth\markboth
     \def\chaptermark##1{%
       \markboth{\CTEXifname{\CTEXthechapter\quad}{}\uestc@spacetitle{##1}}{}%
@@ -2299,7 +2297,7 @@
     titleformat = \uestc@spacetitle,
     number      = \zhnumber{\arabic{chapter}},
     aftername   = \hspace{0.5\ccwd},
-    beforeskip  = 24pt,
+    beforeskip  = 24bp,
     afterskip   = 18bp,
     fixskip     = true,
   },
