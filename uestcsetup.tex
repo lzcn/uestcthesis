@@ -24,8 +24,8 @@
   % udc                = {621.39}   % 国际十进分类法 UDC 的类号
   % book-class         = {TN828.6}, % 中图法分类号 http://pss.uestc.edu.cn:8080/chineseSearch.action
   % 数学字体
-  math-style         = GB,  % 可选：GB, TeX, ISO
-  math-font          = lm,  % 可选：stix, xits, libertinus
+  % math-style         = GB,  % 可选：GB, TeX, ISO
+  math-font            = lm,  % 可选：stix, xits, libertinus, newcm, cm, lm, newtx
 }
 
 
@@ -33,9 +33,11 @@
 
 % 定理类环境宏包
 \usepackage{amsthm}
+\usepackage{array}
 
-% 插图
+% 插图以及子图
 \usepackage{graphicx}
+\usepackage{subfig}
 
 % 跨页表格
 \usepackage{longtable}
