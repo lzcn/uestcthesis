@@ -2324,7 +2324,6 @@
   % 序号与题名间空1个半角字符。
   subsubsection = {
     format     = \sffamily\bfseries\fontsize{12bp}{20bp}\selectfont,
-    number     = \arabic{subsubsection},
     aftername  = \hspace{0.3\ccwd},
     beforeskip = 12bp,
     afterskip  = 6bp,
