@@ -2287,18 +2287,21 @@
 % 另外 \pkg{ctex} v2.2 前的beforeskip的符号有特殊意义。
 
 % 各章标题由序号和名称组成，之间空1个半角字符。
+% TODO: 由于 Latex 和 Word 的排版有区别，采用和官方相同的段前距和段后距不符合
+% 实际的排版效果，因此手动对其进行更改
 \ctexset{
   %
   % 一级标题，即章标题：黑体 15 磅加粗居中，单倍行距，段前 24 磅，段后 18 磅，
   % 章序号与章名间空1个半角字符。
+  % 由于实际中发现，使用 28 和 21 的结果要更加符合官方的排版
   chapter = {
     format      = \centering\sffamily\bfseries\fontsize{15bp}{25bp}\selectfont,
     nameformat  = {},
     titleformat = \uestc@spacetitle,
     number      = \zhnumber{\arabic{chapter}},
     aftername   = \hspace{0.5\ccwd},
-    beforeskip  = 24bp,
-    afterskip   = 18bp,
+    beforeskip  = 28bp,
+    afterskip   = 21bp,
     fixskip     = true,
   },
   % 
@@ -2727,17 +2730,21 @@
 
 % 用 \pkg{caption} 宏包设置图、表的格式：
 
-% TODO: 图片行 段前 6 磅，段后 0 磅
-% 图题置于图的下方，宋体 10.5 磅居中，段前 6 磅，段后 12 磅，左右缩进 4 个字符
+% TODO: 
+% 图所在行用单倍行距，段前距6磅
+% 图题置于图片下方，黑体 10.5 磅居中，段前 6 磅，段后 12 磅，左右缩进 4 个字符
 % 图号与图题文字之间空一字，图号、图题加粗。
-% 图注位于图的下方，左缩进两字，续行悬挂缩进左对齐，两端对齐。
+% 图注置于图题下方，黑体 10.5 磅顶格，段前 6 磅，段后 6 磅
 
 % 表题置于表的上方，黑体 10.5 磅居中，单倍行距，段前 12 磅，段后 6 磅，左右缩进 4 个字符
 % 表号与表题文字之间空一字，表号、表题加粗。
 % 表注左缩进两字，续行悬挂缩进左对齐，两端对齐。
 
+% Space between floats at the top or bottom of a page
 \setlength{\floatsep}{6bp}
+% Space between the last (first) float at the top (bottom) of a page
 \setlength{\textfloatsep}{6bp}
+% Space above and below a float in the middle of the main text
 \setlength{\intextsep}{6bp}
 
 \DeclareCaptionFont{uestc}{%
@@ -2759,11 +2766,12 @@
 
 \captionsetup[figure]{
   aboveskip = 6bp,
-  belowskip = 0bp,
+  belowskip = 12bp,
 }
+
 \captionsetup[table]{
-  aboveskip = 9bp,
-  belowskip = 0bp,
+  aboveskip = 6bp,
+  belowskip = 12bp,
 }
 
 % 由于 LaTeX2e kernel 的问题，图表等浮动体与文字前后的距离不一致，需要进行 patch。
