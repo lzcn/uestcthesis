@@ -5,7 +5,7 @@
 [![Build](https://github.com/lzcn/uestcthesis/workflows/build/badge.svg)](https://github.com/lzcn/uestcthesis/actions)
 
 本项目是电子科技术大学研究生学位论文 $\LaTeX$ 模板。参考最新版的
-《[电子科技大学研究生学位论文撰写规范（2022年1月修订）](https://gr.uestc.edu.cn/xiazai/114/3917)》的要求编写。
+《[电子科技大学研究生学位论文撰写规范（2022 年 1 月修订）](https://gr.uestc.edu.cn/xiazai/114/3917)》的要求编写。
 
 注意：
 
@@ -21,13 +21,13 @@
 
 - 编译模板的使用说明文档 `uestcthesis-doc.pdf`：
 
-  ```
+  ```bash
   latexmk -xelatex uestcthesis-doc.tex
   ```
 
 - 编译论文 `main.pdf`：
 
-  ```
+  ```bash
   latexmk -xelatex main.tex
   ```
 
