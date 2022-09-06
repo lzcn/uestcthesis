@@ -33,18 +33,28 @@
 
 % 定理类环境宏包
 \usepackage{amsthm}
-\usepackage{array}
 
 % 插图以及子图
 \usepackage{graphicx}
-\usepackage{subfig}
+\usepackage{subcaption}
 
-% 跨页表格
+% 表格类包
+\usepackage{array}
 \usepackage{longtable}
 \usepackage{tabularx}
+% 定义固定宽度的表格样式
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% 三线表线宽: 上下边线线宽 1.5 磅，表内线条线宽 0.75 磅
+% 实际中发现Word中，上下边线线宽 1.5 磅 和 0.5 磅
+% 因此将线宽的调整的接口提到配置文件中，便于自定义修改
+\setlength{\heavyrulewidth}{1.5bp}
+\setlength{\lightrulewidth}{0.75bp}
+\setlength{\cmidrulewidth}{0.75bp}
+% 同时更改其它包的线宽，如 hline vline 等
+\setlength{\arrayrulewidth}{0.75bp}
 
 % 算法
 \usepackage[ruled,linesnumbered]{algorithm2e}
@@ -98,3 +108,31 @@
 
 % hyperref 宏包在最后调用
 \usepackage{hyperref}
+
+% 便捷命令
+
+% 数学
+% p-norm
+\newcommand{\norm}[2][2]{\|#2\|_{#1}}
+% Frobenius norm
+\newcommand{\fnorm}[1]{\|#1\|_{F}}
+% Field
+\newcommand{\FComp}[1]{\mathbb{C}^{#1}}
+\newcommand{\FReal}[1]{\mathbb{R}^{#1}}
+\newcommand{\R}[1]{\mathbb{R}^{#1}}
+% vector, matrix and tensor
+\newcommand{\V}[1]{\boldsymbol{{#1}}}
+\newcommand{\M}[1]{\mathbf{{#1}}}
+\newcommand{\T}[1]{\mathcal{{#1}}}
+
+% SVD
+\newcommand{\SVD}[3]{\M{#1}\M{#2}\M{#3}^\intercal}
+
+% ref
+\newcommand{\Eqn}[1]{式~(\ref{#1})~}
+\newcommand{\Eqns}[2]{式~\ref{#1}~至式~\ref{#2}~}
+\newcommand{\Table}[1]{表~\ref{#1}~}
+\newcommand{\Tables}[2]{表~\ref{#1}~至表\ref{#2}~}
+\newcommand{\Fig}[1]{图~\ref{#1}~}
+\newcommand{\Figs}[2]{图~\ref{#1}~至图\ref{#2}~}
+\newcommand{\Sec}[1]{\ref{#1}节}

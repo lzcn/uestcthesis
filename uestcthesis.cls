@@ -1582,6 +1582,7 @@
   vmargin    = 3.0cm,
   hmargin    = 3.0cm,
   headsep    = 0.49cm,
+  headheight = 0.51cm,
   footskip   = 1.0cm,
 }
 
@@ -2826,13 +2827,6 @@
 }{%
   \small
 }{}{\uestc@patch@error{\@floatboxreset}}
-
-% 三线表线宽: 上下边线线宽 1.5 磅，表内线条线宽 0.75 磅
-\setlength{\heavyrulewidth}{1.5bp}
-\setlength{\lightrulewidth}{0.75bp}
-\setlength{\cmidrulewidth}{0.75bp}
-% 其他线宽
-\setlength{\arrayrulewidth}{0.75bp}
 
 % 对 \pkg{longtable} 跨页表格进行相同的设置。
 %
