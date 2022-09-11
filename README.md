@@ -4,18 +4,8 @@
 [![GitHub commits](https://img.shields.io/github/commits-since/lzcn/uestcthesis/latest.svg)](https://github.com/lzcn/uestcthesis/commits/master)
 [![Build](https://github.com/lzcn/uestcthesis/workflows/build/badge.svg)](https://github.com/lzcn/uestcthesis/actions)
 
-本项目是电子科技术大学研究生学位论文 $\LaTeX$ 模板。参考最新版的
+电子科技术大学论文 $\LaTeX$ 模板，基于[ustctug/ustcthesis](https://github.com/ustctug/ustcthesis/)项目，并参考
 《[电子科技大学研究生学位论文撰写规范（2022 年 1 月修订）](https://gr.uestc.edu.cn/xiazai/114/3917)》的要求编写。
-
-注意：
-
-1. 使用说明文档 `uestcthesis-doc.pdf` 在发布版中附带，用户也可自行编译；**使用模板前应仔细阅读**。
-
-2. 本模板要求 TeX Live、MacTeX、MiKTeX 不低于 2017 年的发行版，
-   并且尽可能升级到最新。安装和升级方法见
-   [新手指南](https://github.com/lzcn/uestcthesis/wiki/新手指南)。
-
-3. **不支持** [CTeX 套装](https://github.com/lzcn/uestcthesis/wiki/常见问题#3-模板支持用-ctex-套装编译吗)。
 
 ## 编译文档
 
@@ -33,15 +23,15 @@
 
 - 如需清理论文编译过程中的临时文件，可以：
 
-  ```
+  ```bash
   latexmk -c
   ```
 
 - 以上编译过程也可以用 `make` 工具：
 
-  ```
+  ```bash
   make doc        # 编译生成 uestcthesis-doc.pdf
-  make            # 编译生成论文 main.pdf
+  make main       # 编译生成论文 main.pdf
   make clean      # 删除编译过程中生成的临时文件
   ```
 
@@ -57,9 +47,6 @@
    中搜索该问题的关键词；
 5. 在 [GitHub Issues](https://github.com/lzcn/uestcthesis/issues)
    中提出新 issue，并回答以下问题： - 使用了什么版本的 TeX Live / MacTeX / MiKTeX ？ - 具体的问题是什么？ - 正确的结果应该是什么样的？ - 是否应该附上相关源码或者截图？
-
-如果导师或者院系在格式上有额外的要求，请将老师的邮件转发给模板作者。
-作者会考虑增加接口以便修改格式。
 
 ## 更多资料
 

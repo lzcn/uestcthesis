@@ -1,4 +1,4 @@
-### 要参与 LaTeX 模板的开发，首先要熟悉面向用户的命令和工具，除了 lshort，还应熟悉：
+### 要参与 LaTeX 模板的开发，首先要熟悉面向用户的命令和工具，除了 lshort，还应熟悉
 
 - latex2e: 系统地介绍了 LATEX 使用的方方面面的文档，有平时很多用不到但是 LATEX 提供了的命令
 
@@ -8,8 +8,7 @@
 
 - 一些调试技巧如 `\show` 和 `\meaning` 命令
 
-
-### 下面是面向开发的文档：
+### 下面是面向开发的文档
 
 - clsguide: 给 LaTaX2e 宏包作者的指南
 
@@ -23,15 +22,13 @@
 
 - dtxtut: LaTeX 的宏包与说明文档的封装方式，更详细的有 docstrip 和 doc，[Joseph Wright 的文章](http://www.texdev.net/2009/10/06/a-model-dtx-file/) 介绍了更好封装的技巧
 
-
-### 关于更低层的 TeX 只是，有以下资料:
+### 关于更低层的 TeX 只是，有以下资料
 
 - TeXbook: Knuth 的 TeX 圣经，了解底层 TeX 的原理必读。还有更简略一点的介绍文档 TeXbyTopic 和 impatient。
 
 - The LaTeX Companion: 一本大而全的书。
 
-
-### 关于 BibTeX，应阅读以下文档:
+### 关于 BibTeX，应阅读以下文档
 
 - btxdoc, btxhak: BibTeX 的说明文档
 
@@ -51,16 +48,13 @@ LaTeX3 的开发正在进行中，其底层接又已经相对成熟和稳定。x
 
 - source3: 这是 LaTeX3 的实现
 
-
-
-### 参考：
+### 参考
 
 [开发一个 LaTeX 宏包需要多少知识？ - 知乎](https://www.zhihu.com/question/27017364)
 
 [如何写一个package或者class - 知乎专栏](https://zhuanlan.zhihu.com/p/19705200)
 
-
-### 一些高质量的模板：
+### 一些高质量的模板
 
 - 清华大学 [xueruini/thuthesis](https://github.com/xueruini/thuthesis)
 
