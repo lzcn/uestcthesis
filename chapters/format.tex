@@ -20,16 +20,11 @@
 
 中、英文字号对应关系如表2-1所示，主要文字及段落格式要求如表2-2所示。
 
-\begin{table}[h]
+\begin{table}[!h]
   \centering
   \caption{中、英文字号对应关系}
   \label{tab:fontsize}
-  \renewcommand{\arraystretch}{0.8}
-  \begin{tabular*}{\linewidth}{
-    >{\centering\small\arraybackslash}p{0.22\linewidth}
-    >{\centering\small\arraybackslash}p{0.22\linewidth}|
-    >{\centering\small\arraybackslash}p{0.22\linewidth}
-    >{\centering\small\arraybackslash}p{0.22\linewidth}}
+  \begin{tabular*}{\linewidth}{C{0.22\linewidth}C{0.22\linewidth}C{0.22\linewidth}C{0.22\linewidth}}
     \toprule
     中文字号 & 英文磅数 & 中文字号 & 英文磅数  \\
     \midrule
@@ -41,12 +36,10 @@
   \end{tabular*}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[!h]
   \centering
   \caption{中、英文字号对应关系}
   \label{tab:format}
-  \renewcommand{\arraystretch}{1.2}
-  {\small
   \begin{tabular*}{\linewidth}{
     @{\extracolsep{\fill}}C{0.12\linewidth} % 内容
     @{\extracolsep{\fill}}C{0.05\linewidth} % 字体
@@ -77,10 +70,9 @@
   公式 & & 小四 & 居中 &6磅 &6磅  \\
   公式编号 & & 小四 & 右对齐\textsuperscript{*} & 6磅 & 6磅 & {\textsuperscript{*}\kaishu\fontsize{9bp}{9bp}\selectfont 公式编号前不加引导线，详见2.5} \\
 \bottomrule
-\end{tabular*}}
+\end{tabular*}
 \vspace{6bp}
 \end{table}
-
 
 其他要求：
 \begin{enumerate}

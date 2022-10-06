@@ -34,13 +34,10 @@
 % 定理类环境宏包
 \usepackage{amsthm}
 
-% 插图以及子图
-\usepackage{graphicx}
-\usepackage{subcaption}
-
-% 表格类包
-\usepackage{array}
+% 跨页表格
 \usepackage{longtable}
+
+% 固定宽度的表格
 \usepackage{tabularx}
 
 % 定义固定宽度的表格样式
@@ -48,11 +45,6 @@
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
 
-% 三线表线宽: 上下边线线宽 1.5 磅，表内线条线宽 0.75 磅, 其他线条线宽 0.75 磅
-\setlength{\heavyrulewidth}{1.5bp}
-\setlength{\lightrulewidth}{0.75bp}
-\setlength{\cmidrulewidth}{0.75bp}
-\setlength{\arrayrulewidth}{0.75bp}
 
 % 算法
 \usepackage[ruled,linesnumbered]{algorithm2e}

@@ -457,6 +457,7 @@
 \RequirePackage{fontspec}[2017/03/31]
 \RequirePackage{geometry}
 \RequirePackage{graphicx}
+% 利用 fancyhdr 设置页眉页脚
 \RequirePackage{fancyhdr}
 \RequirePackage{color}
 \RequirePackage{titletoc}
@@ -466,7 +467,11 @@
 \RequirePackage{notoccite}
 \RequirePackage{multirow}
 \RequirePackage{calc}
+% 表线控制
 \RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{subcaption}
+
 
 % 如果用户在导言区未调用 \pkg{biblatex}，则自动调用 \pkg{natbib}。
 \AtEndPreamble{
@@ -738,7 +743,7 @@
   \fi
 \fi
 
-% 要求西文字体使用 Times New Roman，
+% 要求西文字体使用 Times New Roman。
 % 但是在 Linux 下没有这两个字体，所以使用它们的克隆版 TeX Gyre Termes 和
 % TeX Gyre Heros。
 \ifuestc@font@auto
@@ -2085,7 +2090,7 @@
   \cline{2-2}
   Student ID & \uestc@student@id \\
   \cline{2-2}
-  Supervisor & \uestc@supervisor@type@en \uestc@supervisor@en \\
+  Supervisor & \uestc@supervisor@type@en~\uestc@supervisor@en \\
   \cline{2-2}
   School & \multirow[t]{2}{*}{\centering\bfseries\fontsize{16pt}{28pt}\selectfont\uestc@department@en} \\
   \cline{2-2}
@@ -2680,11 +2685,53 @@
   \noindent
   \hb@xt@2\ccwd{\hss\@makefnmark}#1}
 
+% 允许用户设置图表编号的连接符
+\uestc@define@key{
+    figure-number-separator = {
+      name = figure@number@separator,
+      default = {-},
+  },
+    table-number-separator = {
+    name = table@number@separator,
+    default = {-},
+  },
+    equation-number-separator = {
+      name = equation@number@separator,
+      default = {-},
+  },
+    number-separator = {
+      name = number@separator,
+      default = {-},
+  },
+}
 
-% 公式以及图标的编号方式
-\renewcommand{\theequation}{\arabic{chapter}-\arabic{equation}}
-\renewcommand{\thetable}{\arabic{chapter}-\arabic{table}}
-\renewcommand{\thefigure}{\arabic{chapter}-\arabic{figure}}
+\renewcommand\thefigure{%
+  \ifnum\c@chapter>\z@
+    \thechapter
+    \uestc@figure@number@separator
+  \fi
+  \@arabic\c@figure
+}
+\renewcommand\thetable{%
+  \ifnum\c@chapter>\z@
+    \thechapter
+    \uestc@table@number@separator
+  \fi
+  \@arabic\c@table
+}
+\renewcommand\theequation{%
+  \ifnum\c@chapter>\z@
+    \thechapter
+    \uestc@equation@number@separator
+  \fi
+    \@arabic\c@equation
+}
+\newcommand\uestc@set@number@separator{%
+  \let\uestc@figure@number@separator\uestc@number@separator
+  \let\uestc@table@number@separator\uestc@number@separator
+  \let\uestc@equation@number@separator\uestc@number@separator
+}
+\uestc@option@hook{number-separator}{\uestc@set@number@separator}
 
 % \subsection{列表}
 % \label{sec:list}
@@ -2758,9 +2805,9 @@
 
 \captionsetup{
   width          = \textwidth - 8\ccwd,
-  font           = {doublespacing, small},
+  font           = uestc,
   labelsep       = space,
-  skip           = 6pt,
+  skip           = 6bp,
   figureposition = bottom,
   tableposition  = top,
 }
@@ -2774,6 +2821,25 @@
   aboveskip = 6bp,
   belowskip = 12bp,
 }
+
+% \captionsetup[sub]{font=uetsc}
+% \renewcommand{\thesubfigure}{(\alph{subfigure})}
+% \renewcommand{\thesubtable}{(\alph{subtable})}
+\newcommand\uestc@set@table@font{
+  \ifuestc@language@chinese
+    \def\uestc@table@font{%
+      \fontsize{10.5bp}{13.6bp}\selectfont
+      \renewcommand\arraystretch{1.42}%
+}%
+\else
+  \def\uestc@table@font{%
+    \fontsize{10.5bp}{12bp}\selectfont
+    \renewcommand\arraystretch{1.47}%
+}%
+\fi
+}
+\uestc@set@table@font
+\uestc@option@hook{language}{\uestc@set@table@font}
 
 % 由于 LaTeX2e kernel 的问题，图表等浮动体与文字前后的距离不一致，需要进行 patch。
 % 参考 \href{https://github.com/tuna/thuthesis/issues/614}{tuna/thuthesis/issues\#614}、
@@ -2825,7 +2891,7 @@
 \patchcmd\@floatboxreset{%
   \normalsize
 }{%
-  \small
+  \uestc@table@font
 }{}{\uestc@patch@error{\@floatboxreset}}
 
 % 对 \pkg{longtable} 跨页表格进行相同的设置。
@@ -2842,6 +2908,11 @@
   }
 }
 
+
+% 线宽
+\heavyrulewidth=1.5bp
+\lightrulewidth=0.75bp
+\arrayrulewidth=0.75bp
 
 % \subsection{参考文献}
 
