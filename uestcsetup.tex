@@ -42,18 +42,16 @@
 \usepackage{array}
 \usepackage{longtable}
 \usepackage{tabularx}
+
 % 定义固定宽度的表格样式
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
 
-% 三线表线宽: 上下边线线宽 1.5 磅，表内线条线宽 0.75 磅
-% 实际中发现Word中，上下边线线宽 1.5 磅 和 0.5 磅
-% 因此将线宽的调整的接口提到配置文件中，便于自定义修改
+% 三线表线宽: 上下边线线宽 1.5 磅，表内线条线宽 0.75 磅, 其他线条线宽 0.75 磅
 \setlength{\heavyrulewidth}{1.5bp}
 \setlength{\lightrulewidth}{0.75bp}
 \setlength{\cmidrulewidth}{0.75bp}
-% 同时更改其它包的线宽，如 hline vline 等
 \setlength{\arrayrulewidth}{0.75bp}
 
 % 算法
@@ -128,9 +126,9 @@
 % SVD
 \newcommand{\SVD}[3]{\M{#1}\M{#2}\M{#3}^\intercal}
 
-% ref
+% 图表的引用
 \newcommand{\Eqn}[1]{式~(\ref{#1})~}
-\newcommand{\Eqns}[2]{式~\ref{#1}~至式~\ref{#2}~}
+\newcommand{\Eqns}[2]{式~(\ref{#1})~至式~(\ref{#2})~}
 \newcommand{\Table}[1]{表~\ref{#1}~}
 \newcommand{\Tables}[2]{表~\ref{#1}~至表\ref{#2}~}
 \newcommand{\Fig}[1]{图~\ref{#1}~}
