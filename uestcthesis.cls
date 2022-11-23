@@ -1622,7 +1622,7 @@
     % 用小 5 号字（9 bp）标注“中国科学技术大学本科毕业论文”，居中；
     % 从目录页开始在每面底部居中用小五宋体（9 bp）连续编页码。
     \def\uestc@hf@font{\fontsize{9bp}{12bp}\selectfont}
-    \fancyhead[C]{\uestc@hf@font 中国科学技术大学本科毕业论文}%
+    \fancyhead[C]{\uestc@hf@font 电子科技大学\uestc@thesis@name}%
     \fancyfoot[C]{\uestc@hf@font\thepage}%
     \let\@mkboth\@gobbletwo
     \let\chaptermark\@gobble
@@ -1630,6 +1630,34 @@
   \fi
 }
 \pagestyle{plain}
+
+% 论文前置部分奇偶页页眉保持一致
+\fancypagestyle{front}{%
+  \fancyhf{}%
+  %
+  % 页眉位于页面顶端居中书写，五号字
+  % 页码位于页面底端居中书写，小五号字
+  \ifuestc@degree@graduate
+    \fancyhead[C]{\fontsize{10.5bp}{12bp}\selectfont\leftmark}%
+    \fancyfoot[C]{\fontsize{9bp}{10.3bp}\selectfont\thepage}%
+    \let\@mkboth\markboth
+    \def\chaptermark##1{%
+      \markboth{\CTEXifname{\CTEXthechapter\quad}{}\uestc@spacetitle{##1}}{}%
+    }%
+    \let\sectionmark\@gobble
+  \else
+    %
+    % 本科生要求除封面、扉页外，每面上部加页眉，
+    % 用小 5 号字（9 bp）标注“中国科学技术大学本科毕业论文”，居中；
+    % 从目录页开始在每面底部居中用小五宋体（9 bp）连续编页码。
+    \def\uestc@hf@font{\fontsize{9bp}{12bp}\selectfont}
+    \fancyhead[C]{\uestc@hf@font 电子科技大学\uestc@thesis@name}%
+    \fancyfoot[C]{\uestc@hf@font\thepage}%
+    \let\@mkboth\@gobbletwo
+    \let\chaptermark\@gobble
+    \let\sectionmark\@gobble
+  \fi
+}
 
 % |headings| 只有页眉，没有页脚，用于研究生的符号说明和本科生的 front matter。
 \fancypagestyle{headings}{\fancyfoot{}}
@@ -2439,6 +2467,7 @@
 }
 \newenvironment{abstract}{%
   \uestcsetup{language=chinese}%
+  \pagestyle{front}
   \uestc@chapter{摘要}%
 }{
   \par\null\par\noindent\hangindent=4\ccwd\relax
@@ -2452,6 +2481,7 @@
 % 英文摘要环境
 \newenvironment{abstract*}{%
   \uestcsetup{language=english}%
+  \pagestyle{front}
   \ifuestc@degree@graduate
     \uestc@chapter{ABSTRACT}%
   \else
@@ -2493,6 +2523,7 @@
   \fi
   \uestc@chapter{\contentsname}%
   \@starttoc{toc}%
+  \pagestyle{front}
 }
 
 % 下面用 \pkg{titletoc} 宏包设置目录内容的格式。
