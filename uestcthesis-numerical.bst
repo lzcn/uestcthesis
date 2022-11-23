@@ -2385,6 +2385,8 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{" number.label int.to.str$ * "}" *
   write$ newline$
+  "\interlinepenalty=10000"
+  write$ newline$
   terms.in.macro
     { "\providecommand{\biband}{和}"
       write$ newline$
