@@ -2526,8 +2526,8 @@
     \pagestyle{plain}%
   \fi
   \uestc@chapter{\contentsname}%
-  \@starttoc{toc}%
   \pagestyle{front}
+  \@starttoc{toc}%
 }
 
 % 下面用 \pkg{titletoc} 宏包设置目录内容的格式。
