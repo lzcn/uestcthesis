@@ -1719,6 +1719,10 @@
   title = {
     default = {论文题目},
   },
+  title-width-ratio = {
+    name = title@width@ratio,
+    default = {0.8},
+  },
   title* = {
     default = {Title},
     name    = title@en,
