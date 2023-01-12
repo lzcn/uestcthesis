@@ -1977,13 +1977,13 @@
       \vskip 44pt
       {\centering\includegraphics[width=164bp]{figures/uestc-badge.pdf}}
       \par
-      \vskip 32.5pt
+      \vskip 42.5pt
       % title
       \begingroup
         \setlength{\extrarowheight}{10pt}
         \begin{tabular}{lp{10.4cm}p{1.4cm}}
         {\bfseries\fontsize{18pt}{22pt}\selectfont 论文题目 } 
-        & \multirow[t]{2}{10.4cm}{\centering\bfseries\fontsize{18pt}{29pt}\selectfont\uestc@title} &
+        & \centering\multirow[t]{2}{\uestc@title@width@ratio\linewidth}{\centering\bfseries\fontsize{18pt}{29pt}\selectfont\uestc@title} &
         \\
           \cline{2-2} & \\
           \cline{2-2} & \\
@@ -2115,7 +2115,7 @@
   \begin{tabular}{>{\fontsize{16pt}{16pt}\selectfont}r
     >{\centering\arraybackslash\bfseries\fontsize{16pt}{16pt}\selectfont}
     p{11.8cm}}
-  Discipline & \multirow[t]{2}{8.6cm}{\centering\bfseries\fontsize{16pt}{28pt}\selectfont\uestc@speciality@en} \\
+  Discipline & \multirow[t]{2}{0.8\linewidth}{\centering\bfseries\fontsize{16pt}{28pt}\selectfont\uestc@speciality@en} \\
   \cline{2-2} & \\
   \cline{2-2}
   Author & \uestc@author@en \\
@@ -2124,7 +2124,8 @@
   \cline{2-2}
   Supervisor & \uestc@supervisor@type@en~\uestc@supervisor@en \\
   \cline{2-2}
-  School & \multirow[t]{2}{*}{\centering\bfseries\fontsize{16pt}{28pt}\selectfont\uestc@department@en} \\
+  School & \multirow[t]{2}{0.8\linewidth}{\centering\bfseries\fontsize{16pt}{28pt}\selectfont\uestc@department@en} \\
+  \cline{2-2} & \\
   \cline{2-2}
   \end{tabular}
   \end{titlepage}%
